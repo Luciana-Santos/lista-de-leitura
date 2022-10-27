@@ -53,9 +53,15 @@ body {
   --cl-vk-violet: hsl(260, 21%, 5%);
 }
 
-.titulo {
-  color: steelblue;
-  text-transform: uppercase;
+.logo {
+  text-align: center;
+  padding-block: 3.75rem;
+}
+.logo a {
+  color: var(--cl-white);
+}
+.logo a i {
+  color: var(--cl-md-blue);
 }
 
 /*# sourceMappingURL=styles.css.map */

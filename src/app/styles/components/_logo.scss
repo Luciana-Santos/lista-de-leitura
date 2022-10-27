@@ -1,0 +1,14 @@
+@use '../utils/' as *;
+
+.logo {
+  text-align: center;
+  padding-block: rem(60);
+
+  a {
+    color: var(--cl-white);
+
+    i {
+      color: var(--cl-md-blue);
+    }
+  }
+}
