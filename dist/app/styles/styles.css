@@ -1,0 +1,57 @@
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+img {
+  width: 100%;
+  display: block;
+}
+
+h1, h2, h3 {
+  line-height: 1;
+  font-weight: 400;
+}
+
+a {
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
+
+body {
+  min-height: 100vh;
+  line-height: 1.5;
+  background-color: var(--cl-vdark-blue);
+  color: var(--cl-body);
+}
+
+.section {
+  padding-block: 1.875rem;
+}
+
+.container {
+  width: min(100% - 2rem, 55rem);
+  margin-inline: auto;
+}
+
+:root {
+  --cl-white: hsl(0, 0%, 100%);
+  --cl-body: hsl(0, 0%, 65%);
+  --cl-black: hsl(0, 0%, 0%);
+  --cl-accent: hsl(349, 83%, 45%);
+  --cl-md-blue: hsl(213, 38%, 37%);
+  --cl-dk-violet: hsl(256, 19%, 16%);
+  --cl-vk-violet: hsl(260, 21%, 5%);
+}
+
+.titulo {
+  color: steelblue;
+  text-transform: uppercase;
+  font-family: Consolas, monospace;
+}
+
+/*# sourceMappingURL=styles.css.map */
