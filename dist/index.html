@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Static Setup</title>
+  <title>Lista de Leitura</title>
   <link rel="stylesheet" href="app/styles/styles.css">
 
   <!-- google fonts -->
@@ -21,6 +21,40 @@
   <div class="container">
     <h1 class="logo"><a href="index.html"><i class="fa-solid fa-bookmark"></i> Lista de Leitura</a></h1>
 
+    <section class="add_book">
+      <form class="add_book__form">
+        <fieldset class="add_book__form__img">
+          <label>
+            <i class="fa-regular fa-image"></i>
+            <input type="file" accept="image/*">
+          </label>
+        </fieldset>
+
+        <div class="add_book__form__info">
+          <fieldset class="add_book__form__info--top-row">
+            <label for="title">Titulo:</label>
+            <input type="text" name="title" id="title" placeholder="O senhor dos aneis">
+            <label for="author">Autor:</label>
+            <input type="text" name="author" id="author" placeholder="JRR Tolkien">
+          </fieldset>
+
+          <fieldset class="add_book__form__info--bottom-row">
+            <label>Total de páginas: <input type="number" name="total pages" id="totalPages" placeholder="576"></label>
+            <label>Meta diaria: <i class="fa-solid fa-circle-info"></i> <span class="book_info__tooltip">Quantidade de páginas a serem lidas por dia.</span> <input type="number" name="total pages" id="totalPages" placeholder="60"></label>
+          </fieldset>
+        </div>
+
+        <div class="add_book__form__previsao">
+          <p>Previsão de término:</p>
+          <p><i class="fa-solid fa-flag"></i><span class="data-prevista">04/11/2022</span></p>
+        </div>
+
+        <div class="form__btn">
+          <button class="btn btn--cancel">Descartar</button>
+          <button class="btn btn--add">Adicionar</button>
+        </div>
+      </form>
+    </section>
   </div>
   <script src="./app/js/index.js" defer></script>
 </body>
