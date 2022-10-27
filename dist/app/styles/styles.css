@@ -1,4 +1,6 @@
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -9,7 +11,9 @@ img {
   display: block;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   line-height: 1;
   font-weight: 400;
 }
@@ -25,8 +29,9 @@ ul {
 body {
   min-height: 100vh;
   line-height: 1.5;
-  background-color: var(--cl-vdark-blue);
+  background-color: var(--cl-vk-violet);
   color: var(--cl-body);
+  font-family: "Nunito", sans-serif;
 }
 
 .section {
@@ -51,7 +56,6 @@ body {
 .titulo {
   color: steelblue;
   text-transform: uppercase;
-  font-family: Consolas, monospace;
 }
 
 /*# sourceMappingURL=styles.css.map */
