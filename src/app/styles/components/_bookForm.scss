@@ -4,7 +4,11 @@
   background-color: var(--cl-md-violet);
   padding-block: rem(60);
   border-radius: rem(4);
-  padding-inline: rem(60);
+  padding-inline: rem(30);
+
+  @include breakpoint(medium) {
+    padding-inline: rem(60);
+  }
 
   &__form {
     display: grid;
@@ -108,33 +112,6 @@
       justify-self: end;
       display: flex;
       gap: (40px);
-
-      .btn {
-        background: transparent;
-        border: none;
-        font-size: rem(16);
-        cursor: pointer;
-        padding-block: rem(10);
-      }
-
-      .btn--cancel {
-        color: var(--cl-body);
-        text-decoration: underline;
-      }
-
-      .btn--add {
-        padding-inline: rem(30);
-        background: var(--cl-accent);
-        border-radius: rem(4);
-        transition: 0.3s ease;
-        color: var(--cl-white);
-
-        &:focus,
-        &:hover {
-          outline: none;
-          box-shadow: 0 0 0 3px var(--cl-vk-violet), 0 0 0 6px var(--cl-accent);
-        }
-      }
     }
   }
 }

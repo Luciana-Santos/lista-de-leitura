@@ -43,3 +43,30 @@ body {
 .section {
   padding-block: rem(30);
 }
+
+.btn {
+  background: transparent;
+  border: none;
+  font-size: rem(16);
+  cursor: pointer;
+  padding-block: rem(10);
+}
+
+.btn--cancel {
+  color: var(--cl-body);
+  text-decoration: underline;
+}
+
+.btn--red {
+  padding-inline: rem(30);
+  background: var(--cl-accent);
+  border-radius: rem(4);
+  transition: 0.3s ease;
+  color: var(--cl-white);
+
+  &:focus,
+  &:hover {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--cl-vk-violet), 0 0 0 6px var(--cl-accent);
+  }
+}
