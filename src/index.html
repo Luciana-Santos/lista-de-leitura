@@ -6,6 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lista de Leitura</title>
+  <link rel="icon" type="image/x-icon" href="./assets/favicon-32x32.png">
   <link rel="stylesheet" href="app/styles/styles.css">
 
   <!-- google fonts -->
@@ -24,9 +25,9 @@
     <section class="add_book">
       <form class="add_book__form">
         <fieldset class="add_book__form__img">
-          <label>
+          <label data-form="imgPreview">
             <i class="fa-regular fa-image"></i>
-            <input type="file" accept="image/*">
+            <input type="file" accept="image/*" id="cover">
           </label>
         </fieldset>
 
@@ -40,7 +41,7 @@
 
           <fieldset class="add_book__form__info--bottom-row">
             <label>Total de páginas: <input type="number" name="total pages" id="totalPages" placeholder="576"></label>
-            <label>Meta diaria: <i class="fa-solid fa-circle-info"></i> <span class="book_info__tooltip">Quantidade de páginas a serem lidas por dia.</span> <input type="number" name="total pages" id="totalPages" placeholder="60"></label>
+            <label>Meta diaria: <i class="fa-solid fa-circle-info"></i> <span class="book_info__tooltip">Quantidade de páginas a serem lidas por dia.</span> <input type="number" name="pages per day" id="pagesPerDay" placeholder="60"></label>
           </fieldset>
         </div>
 
@@ -51,11 +52,35 @@
 
         <div class="form__btn">
           <button class="btn btn--cancel">Descartar</button>
-          <button class="btn btn--add">Adicionar</button>
+          <button class="btn btn--red" data-form="btn">Adicionar</button>
         </div>
       </form>
     </section>
   </div>
+
+  <main class="book_list main_container" data-book="list">
+    <!-- <article class="book_list__item">
+      <div class="book_list__item__img">
+        <img src="https://i.pinimg.com/564x/5c/d9/cf/5cd9cfb4b8f189df064582ab6cf6dc07.jpg" alt="Only a Monster">
+      </div>
+      <div class="book_list__item__info">
+        <h3>Only a Monster</h3>
+        <p class="prevision">Previsão de término: <span>30/10/2022</span></p>
+        <div class="progress">
+          <p>306 páginas de 396 <span>74%</span></p>
+          <div class="progress__bar">
+            <span></span>
+          </div>
+        </div>
+
+        <div class="book_list__item__btn" data-bookItem="btn">
+          <button class="btn btn--red update">Atualizar</button>
+          <i class="fa-solid fa-trash-can delete"></i>
+        </div>
+      </div>
+    </article> -->
+
+  </main>
   <script src="./app/js/index.js" defer></script>
 </body>
 
