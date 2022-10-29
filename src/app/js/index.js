@@ -1,3 +1,3 @@
-import helloWorld from './modules/helloWorld';
+import initEvents from './modules/events';
 
-helloWorld();
+initEvents();
