@@ -203,6 +203,11 @@ body {
   padding-block: 3.75rem;
   gap: 1.25rem;
 }
+@media (min-width: 74.375em) {
+  .book_list {
+    justify-content: start;
+  }
+}
 .book_list__item {
   padding-block: 1.25rem;
   padding-inline: 1.25rem;

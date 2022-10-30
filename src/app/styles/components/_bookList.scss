@@ -7,6 +7,10 @@
   padding-block: rem(60);
   gap: rem(20);
 
+  @include breakpoint(x-large) {
+    justify-content: start;
+  }
+
   &__item {
     padding-block: rem(20);
     padding-inline: rem(20);
