@@ -127,6 +127,7 @@ var UI = /*#__PURE__*/function () {
       bookItem.classList.add('book_list__item');
       var defaultCover = './assets/cover-undefined.png';
       bookItem.innerHTML = "\n      <div class=\"book_list__item__img\">\n        <img src=\"".concat(book.cover || defaultCover, "\" alt=\"").concat(book.title, "\">\n      </div>\n      <div class=\"book_list__item__info\">\n        <h3>").concat(book.title, "</h3>\n        <p class=\"prevision\">Previs\xE3o de t\xE9rmino: <span>").concat(book.prevision, "</span></p>\n        <div class=\"progress\">\n          <p>306 p\xE1ginas de ").concat(book.pagesTotal, " <span>74%</span></p>\n          <div class=\"progress__bar\">\n            <span></span>\n          </div>\n        </div>\n\n        <div class=\"book_list__item__btn\" data-bookItem=\"btn\">\n          <button class=\"btn btn--red update\">Atualizar</button>\n          <i class=\"fa-solid fa-trash-can delete\"></i>\n        </div>\n      </div>\n    ");
+      bookItem.dataset.book = 'item';
       bookList.insertAdjacentElement('afterbegin', bookItem);
     }
   }, {
@@ -224,6 +225,28 @@ var UI = /*#__PURE__*/function () {
       setTimeout(function () {
         document.querySelector('.alert').remove();
       }, 2000);
+    }
+  }, {
+    key: "bookUpdateModal",
+    value: function bookUpdateModal(element) {
+      var modalContainer = document.querySelector('[data-modal="container"]');
+      var body = document.querySelector('body');
+
+      if (element.classList.contains('update')) {
+        modalContainer.style.display = 'grid';
+        body.style.overflowY = 'hidden';
+      }
+    }
+  }, {
+    key: "cancelUpdate",
+    value: function cancelUpdate(element) {
+      var modalContainer = document.querySelector('[data-modal="container"]');
+      var body = document.querySelector('body');
+
+      if (element.classList.contains('cancel') || element.classList.contains('backdrop')) {
+        modalContainer.style.display = 'none';
+        body.style.overflowY = 'scroll';
+      }
     }
   }]);
 
@@ -325,12 +348,23 @@ function initEvents() {
   bookList.addEventListener('click', function (_ref3) {
     var target = _ref3.target;
     return _UI__WEBPACK_IMPORTED_MODULE_1__["default"].deleteBook(target);
+  }); // abrir modal de atualizar livro
+
+  bookList.addEventListener('click', function (_ref4) {
+    var target = _ref4.target;
+    return _UI__WEBPACK_IMPORTED_MODULE_1__["default"].bookUpdateModal(target);
+  }); // cancelar atualização de leitura
+
+  var modalContainer = document.querySelector('[data-modal="container"]');
+  modalContainer.addEventListener('click', function (_ref5) {
+    var target = _ref5.target;
+    return _UI__WEBPACK_IMPORTED_MODULE_1__["default"].cancelUpdate(target);
   });
   var inputTotalPagesValue = document.querySelector('#totalPages').value;
   var inputPagesPerDayValue = document.querySelector('#pagesPerDay');
   var datePrevision = document.querySelector('[data-from="prevision"]');
-  inputPagesPerDayValue.addEventListener('change', function (_ref4) {
-    var target = _ref4.target;
+  inputPagesPerDayValue.addEventListener('change', function (_ref6) {
+    var target = _ref6.target;
     datePrevision.innerText = (0,_dateFormating__WEBPACK_IMPORTED_MODULE_0__["default"])(inputTotalPagesValue, target.value);
   });
 }

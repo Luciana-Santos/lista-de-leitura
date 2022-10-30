@@ -37,6 +37,7 @@ export default class UI {
         </div>
       </div>
     `;
+    bookItem.dataset.book = 'item';
 
     bookList.insertAdjacentElement('afterbegin', bookItem);
   }
@@ -157,5 +158,27 @@ export default class UI {
     setTimeout(() => {
       document.querySelector('.alert').remove();
     }, 2000);
+  }
+
+  static bookUpdateModal(element) {
+    const modalContainer = document.querySelector('[data-modal="container"]');
+    const body = document.querySelector('body');
+    if (element.classList.contains('update')) {
+      modalContainer.style.display = 'grid';
+      body.style.overflowY = 'hidden';
+    }
+  }
+
+  static cancelUpdate(element) {
+    const modalContainer = document.querySelector('[data-modal="container"]');
+    const body = document.querySelector('body');
+
+    if (
+      element.classList.contains('cancel') ||
+      element.classList.contains('backdrop')
+    ) {
+      modalContainer.style.display = 'none';
+      body.style.overflowY = 'scroll';
+    }
   }
 }

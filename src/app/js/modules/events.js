@@ -40,6 +40,17 @@ export default function initEvents() {
   // remove livro renderizado
   bookList.addEventListener('click', ({ target }) => UI.deleteBook(target));
 
+  // abrir modal de atualizar livro
+  bookList.addEventListener('click', ({ target }) =>
+    UI.bookUpdateModal(target),
+  );
+
+  // cancelar atualização de leitura
+  const modalContainer = document.querySelector('[data-modal="container"]');
+  modalContainer.addEventListener('click', ({ target }) =>
+    UI.cancelUpdate(target),
+  );
+
   const inputTotalPagesValue = document.querySelector('#totalPages').value;
   const inputPagesPerDayValue = document.querySelector('#pagesPerDay');
   const datePrevision = document.querySelector('[data-from="prevision"]');
