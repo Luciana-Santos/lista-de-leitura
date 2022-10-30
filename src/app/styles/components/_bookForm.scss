@@ -80,10 +80,6 @@
         }
       }
 
-      .book_info__tooltip {
-        display: none;
-      }
-
       &::after {
         content: '';
         display: block;
@@ -112,6 +108,32 @@
       justify-self: end;
       display: flex;
       gap: (40px);
+    }
+  }
+
+  .book_info__tooltip_container {
+    position: relative;
+
+    i:hover .book_info__tooltip {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .book_info__tooltip {
+      font-family: var(--ff-nunito);
+      visibility: hidden;
+      display: block;
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: var(--cl-vk-violet);
+      width: rem(108);
+      font-size: rem(12);
+      padding-inline: rem(6);
+      padding-block: rem(4);
+      line-height: rem(18);
+      opacity: 0;
+      transition: opacity 0.3s;
     }
   }
 }

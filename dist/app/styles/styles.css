@@ -35,7 +35,7 @@ body {
   line-height: 1.5;
   background-color: var(--cl-vk-violet);
   color: var(--cl-body);
-  font-family: "Nunito", sans-serif;
+  font-family: var(--ff-nunito);
 }
 
 .section {
@@ -103,6 +103,7 @@ body {
   --cl-vk-violet: hsl(260, 21%, 5%);
   --cl-error: hsl(0, 65%, 51%);
   --cl-success: hsl(123, 43%, 39%);
+  --ff-nunito: "Nunito", sans-serif;
 }
 
 .logo {
@@ -185,9 +186,6 @@ body {
   color: var(--cl-body);
   font-size: 0.8125rem;
 }
-.add_book__form__info .book_info__tooltip {
-  display: none;
-}
 .add_book__form__info::after {
   content: "";
   display: block;
@@ -211,6 +209,29 @@ body {
   justify-self: end;
   display: flex;
   gap: 40px;
+}
+.add_book .book_info__tooltip_container {
+  position: relative;
+}
+.add_book .book_info__tooltip_container i:hover .book_info__tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+.add_book .book_info__tooltip_container .book_info__tooltip {
+  font-family: var(--ff-nunito);
+  visibility: hidden;
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: var(--cl-vk-violet);
+  width: 6.75rem;
+  font-size: 0.75rem;
+  padding-inline: 0.375rem;
+  padding-block: 0.25rem;
+  line-height: 1.125rem;
+  opacity: 0;
+  transition: opacity 0.3s;
 }
 
 .book_list {
