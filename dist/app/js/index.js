@@ -93,13 +93,15 @@ var UI = /*#__PURE__*/function () {
   }, {
     key: "getInputsValue",
     value: function getInputsValue() {
+      var _inputCover$nextEleme;
+
       var id = new Date().getTime();
       var inputCover = document.querySelector('#cover');
       var inputTitleValue = document.querySelector('#title').value;
       var inputAuthorValue = document.querySelector('#author').value;
       var inputTotalPagesValue = document.querySelector('#totalPages').value;
       var inputPagesPerDayValue = document.querySelector('#pagesPerDay').value;
-      var imgBlob = inputCover.nextElementSibling.attributes.src.nodeValue;
+      var imgBlob = inputCover === null || inputCover === void 0 ? void 0 : (_inputCover$nextEleme = inputCover.nextElementSibling) === null || _inputCover$nextEleme === void 0 ? void 0 : _inputCover$nextEleme.attributes.src.nodeValue;
       return {
         id: id,
         imgBlob: imgBlob,

@@ -69,7 +69,7 @@ export default class UI {
     const inputAuthorValue = document.querySelector('#author').value;
     const inputTotalPagesValue = document.querySelector('#totalPages').value;
     const inputPagesPerDayValue = document.querySelector('#pagesPerDay').value;
-    const imgBlob = inputCover.nextElementSibling.attributes.src.nodeValue;
+    const imgBlob = inputCover?.nextElementSibling?.attributes.src.nodeValue;
 
     return {
       id,
