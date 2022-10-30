@@ -1,5 +1,5 @@
 import Book from './Book';
-import dateFormating from './dateFormating';
+import { dateFormating } from './dateFormating';
 import Store from './Store';
 
 export default class UI {
@@ -160,12 +160,61 @@ export default class UI {
     }, 2000);
   }
 
+  static bookModalRender(container, book) {
+    const defaultCover = './assets/cover-undefined.png';
+
+    container.innerHTML = `
+      <div class="modal">
+        <div class="modal__book_cover">
+          <img src="${book.cover || defaultCover}" alt="${book.title}">
+        </div>
+
+        <div class="modal__book_info">
+          <span>${book.author || 'Autor não informado'}</span>
+          <p>${book.title}</p>
+        </div>
+
+        <form class="modal__form" data-modal="form">
+          <fieldset>
+            <label for="actPag">Pág. Atual:*</label>
+            <input type="number" id="actPag" name="actPag" placeholder="89" date-modal="prevision">
+          </fieldset>
+          
+          <div>
+            <span>Pág. Total:*</span>
+            <p data-modal="totalPages">${book.pagesTotal}</p>
+          </div>
+        </form>
+
+        <div class="previsao">
+          <p>Previsão de término:</p>
+          <p class="data-prevista" data-modal="date">${book.prevision}</p>
+
+          <div class="progress">
+            <p>74%</p>
+            <div class="progress__bar">
+              <span></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form__btn">
+          <button class="btn btn--cancel cancel" data-modal="cancel">Cancelar</button>
+          <button class="btn btn--red confirm" data-modal="confirm">OK</button>
+        </div>
+      </div>
+    `;
+  }
+
   static bookUpdateModal(element) {
     const modalContainer = document.querySelector('[data-modal="container"]');
+    const books = Store.getBooks();
+
     const body = document.querySelector('body');
     if (element.classList.contains('update')) {
       modalContainer.style.display = 'grid';
       body.style.overflowY = 'hidden';
+      books.forEach((book) => UI.bookModalRender(modalContainer, book));
     }
   }
 

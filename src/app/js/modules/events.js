@@ -1,4 +1,4 @@
-import dateFormating from './dateFormating';
+import { dateFormating, dateFormatingModal } from './dateFormating';
 import UI from './UI';
 
 export default function initEvents() {
@@ -41,15 +41,16 @@ export default function initEvents() {
   bookList.addEventListener('click', ({ target }) => UI.deleteBook(target));
 
   // abrir modal de atualizar livro
-  bookList.addEventListener('click', ({ target }) =>
-    UI.bookUpdateModal(target),
-  );
+  bookList.addEventListener('click', ({ target }) => {
+    UI.bookUpdateModal(target);
+    renderDatePreviewModal();
+  });
 
   // cancelar atualização de leitura
   const modalContainer = document.querySelector('[data-modal="container"]');
-  modalContainer.addEventListener('click', ({ target }) =>
-    UI.cancelUpdate(target),
-  );
+  modalContainer.addEventListener('click', ({ target }) => {
+    UI.cancelUpdate(target);
+  });
 
   const inputTotalPagesValue = document.querySelector('#totalPages').value;
   const inputPagesPerDayValue = document.querySelector('#pagesPerDay');
@@ -58,4 +59,21 @@ export default function initEvents() {
   inputPagesPerDayValue.addEventListener('change', ({ target }) => {
     datePrevision.innerText = dateFormating(inputTotalPagesValue, target.value);
   });
+
+  function renderDatePreviewModal() {
+    const modalDatePrevision = document.querySelector(
+      '[date-modal="prevision"]',
+    );
+    const dateContainer = document.querySelector('[data-modal="date"]');
+    const totalPages = document.querySelector('[data-modal="totalPages"]');
+
+    if (modalDatePrevision && dateContainer && totalPages) {
+      modalDatePrevision.addEventListener('change', ({ target }) => {
+        dateContainer.innerText = dateFormatingModal(
+          target.value,
+          totalPages.innerText,
+        );
+      });
+    }
+  }
 }

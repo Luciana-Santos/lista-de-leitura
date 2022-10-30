@@ -141,7 +141,7 @@ var UI = /*#__PURE__*/function () {
       var inputTotalPagesValue = document.querySelector('#totalPages').value;
       var inputPagesPerDayValue = document.querySelector('#pagesPerDay').value;
       var imgBlob = inputCover === null || inputCover === void 0 ? void 0 : (_inputCover$nextEleme = inputCover.nextElementSibling) === null || _inputCover$nextEleme === void 0 ? void 0 : _inputCover$nextEleme.attributes.src.nodeValue;
-      var datePrevision = (0,_dateFormating__WEBPACK_IMPORTED_MODULE_3__["default"])(inputTotalPagesValue, inputPagesPerDayValue);
+      var datePrevision = (0,_dateFormating__WEBPACK_IMPORTED_MODULE_3__.dateFormating)(inputTotalPagesValue, inputPagesPerDayValue);
       var id = Date.now();
       console.log(datePrevision);
       return {
@@ -227,14 +227,24 @@ var UI = /*#__PURE__*/function () {
       }, 2000);
     }
   }, {
+    key: "bookModalRender",
+    value: function bookModalRender(container, book) {
+      var defaultCover = './assets/cover-undefined.png';
+      container.innerHTML = "\n      <div class=\"modal\">\n        <div class=\"modal__book_cover\">\n          <img src=\"".concat(book.cover || defaultCover, "\" alt=\"").concat(book.title, "\">\n        </div>\n\n        <div class=\"modal__book_info\">\n          <span>").concat(book.author || 'Autor não informado', "</span>\n          <p>").concat(book.title, "</p>\n        </div>\n\n        <form class=\"modal__form\" data-modal=\"form\">\n          <fieldset>\n            <label for=\"actPag\">P\xE1g. Atual:*</label>\n            <input type=\"number\" id=\"actPag\" name=\"actPag\" placeholder=\"89\" date-modal=\"prevision\">\n          </fieldset>\n          \n          <div>\n            <span>P\xE1g. Total:*</span>\n            <p data-modal=\"totalPages\">").concat(book.pagesTotal, "</p>\n          </div>\n        </form>\n\n        <div class=\"previsao\">\n          <p>Previs\xE3o de t\xE9rmino:</p>\n          <p class=\"data-prevista\" data-modal=\"date\">").concat(book.prevision, "</p>\n\n          <div class=\"progress\">\n            <p>74%</p>\n            <div class=\"progress__bar\">\n              <span></span>\n            </div>\n          </div>\n        </div>\n\n        <div class=\"form__btn\">\n          <button class=\"btn btn--cancel cancel\" data-modal=\"cancel\">Cancelar</button>\n          <button class=\"btn btn--red confirm\" data-modal=\"confirm\">OK</button>\n        </div>\n      </div>\n    ");
+    }
+  }, {
     key: "bookUpdateModal",
     value: function bookUpdateModal(element) {
       var modalContainer = document.querySelector('[data-modal="container"]');
+      var books = _Store__WEBPACK_IMPORTED_MODULE_4__["default"].getBooks();
       var body = document.querySelector('body');
 
       if (element.classList.contains('update')) {
         modalContainer.style.display = 'grid';
         body.style.overflowY = 'hidden';
+        books.forEach(function (book) {
+          return UI.bookModalRender(modalContainer, book);
+        });
       }
     }
   }, {
@@ -265,30 +275,39 @@ var UI = /*#__PURE__*/function () {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ dateFormating)
+/* harmony export */   "dateFormating": () => (/* binding */ dateFormating),
+/* harmony export */   "dateFormatingModal": () => (/* binding */ dateFormatingModal)
 /* harmony export */ });
-/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "./node_modules/@babel/runtime/helpers/esm/slicedToArray.js");
+function daysToSeconds(days) {
+  return Math.round(days * 24 * 60 * 60);
+}
 
-
-var daysToSeconds = function daysToSeconds(days) {
-  return Math.round(days * 25 * 60 * 60);
-};
+var dateNow = new Date();
+var previsionDays;
+var datePreview;
 
 function dateFormating(totalPages, pagesPerDay) {
-  var dateNow = new Date();
-  var previsionDays = totalPages / pagesPerDay;
+  // const dateNow = new Date();
+  // const previsionDays = totalPages / pagesPerDay;
+  previsionDays = totalPages / pagesPerDay;
   var secondsFromDays = daysToSeconds(previsionDays);
-  dateNow.setSeconds(dateNow.getSeconds() + secondsFromDays);
+  dateNow.setSeconds(dateNow.getSeconds() + secondsFromDays); // const datePreview = dateNow.toLocaleDateString('pt-BR');
 
-  var _dateNow$toLocaleDate = dateNow.toLocaleDateString('pt-BR').split('/'),
-      _dateNow$toLocaleDate2 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__["default"])(_dateNow$toLocaleDate, 3),
-      dia = _dateNow$toLocaleDate2[0],
-      mes = _dateNow$toLocaleDate2[1],
-      ano = _dateNow$toLocaleDate2[2];
-
-  console.log(dia, mes, ano);
-  return "".concat(dia, "/").concat(mes, "/").concat(ano);
+  datePreview = dateNow.toLocaleDateString('pt-BR');
+  console.log(datePreview);
+  return datePreview;
 }
+
+function dateFormatingModal(actPage, totalPages) {
+  previsionDays = totalPages / actPage;
+  var secondsFromDays = daysToSeconds(previsionDays);
+  console.log(secondsFromDays);
+  dateNow.setSeconds(dateNow.getSeconds() + secondsFromDays);
+  datePreview = dateNow.toLocaleDateString('pt-BR');
+  return datePreview;
+}
+
+
 
 /***/ }),
 
@@ -352,59 +371,35 @@ function initEvents() {
 
   bookList.addEventListener('click', function (_ref4) {
     var target = _ref4.target;
-    return _UI__WEBPACK_IMPORTED_MODULE_1__["default"].bookUpdateModal(target);
+    _UI__WEBPACK_IMPORTED_MODULE_1__["default"].bookUpdateModal(target);
+    renderDatePreviewModal();
   }); // cancelar atualização de leitura
 
   var modalContainer = document.querySelector('[data-modal="container"]');
   modalContainer.addEventListener('click', function (_ref5) {
     var target = _ref5.target;
-    return _UI__WEBPACK_IMPORTED_MODULE_1__["default"].cancelUpdate(target);
+    _UI__WEBPACK_IMPORTED_MODULE_1__["default"].cancelUpdate(target);
   });
   var inputTotalPagesValue = document.querySelector('#totalPages').value;
   var inputPagesPerDayValue = document.querySelector('#pagesPerDay');
   var datePrevision = document.querySelector('[data-from="prevision"]');
   inputPagesPerDayValue.addEventListener('change', function (_ref6) {
     var target = _ref6.target;
-    datePrevision.innerText = (0,_dateFormating__WEBPACK_IMPORTED_MODULE_0__["default"])(inputTotalPagesValue, target.value);
+    datePrevision.innerText = (0,_dateFormating__WEBPACK_IMPORTED_MODULE_0__.dateFormating)(inputTotalPagesValue, target.value);
   });
-}
 
-/***/ }),
+  function renderDatePreviewModal() {
+    var modalDatePrevision = document.querySelector('[date-modal="prevision"]');
+    var dateContainer = document.querySelector('[data-modal="date"]');
+    var totalPages = document.querySelector('[data-modal="totalPages"]');
 
-/***/ "./node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js":
-/*!*********************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js ***!
-  \*********************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _arrayLikeToArray)
-/* harmony export */ });
-function _arrayLikeToArray(arr, len) {
-  if (len == null || len > arr.length) len = arr.length;
-
-  for (var i = 0, arr2 = new Array(len); i < len; i++) {
-    arr2[i] = arr[i];
+    if (modalDatePrevision && dateContainer && totalPages) {
+      modalDatePrevision.addEventListener('change', function (_ref7) {
+        var target = _ref7.target;
+        dateContainer.innerText = (0,_dateFormating__WEBPACK_IMPORTED_MODULE_0__.dateFormatingModal)(target.value, totalPages.innerText);
+      });
+    }
   }
-
-  return arr2;
-}
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime/helpers/esm/arrayWithHoles.js":
-/*!*******************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/esm/arrayWithHoles.js ***!
-  \*******************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _arrayWithHoles)
-/* harmony export */ });
-function _arrayWithHoles(arr) {
-  if (Array.isArray(arr)) return arr;
 }
 
 /***/ }),
@@ -454,111 +449,6 @@ function _createClass(Constructor, protoProps, staticProps) {
     writable: false
   });
   return Constructor;
-}
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime/helpers/esm/iterableToArrayLimit.js":
-/*!*************************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/esm/iterableToArrayLimit.js ***!
-  \*************************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _iterableToArrayLimit)
-/* harmony export */ });
-function _iterableToArrayLimit(arr, i) {
-  var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"];
-
-  if (_i == null) return;
-  var _arr = [];
-  var _n = true;
-  var _d = false;
-
-  var _s, _e;
-
-  try {
-    for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) {
-      _arr.push(_s.value);
-
-      if (i && _arr.length === i) break;
-    }
-  } catch (err) {
-    _d = true;
-    _e = err;
-  } finally {
-    try {
-      if (!_n && _i["return"] != null) _i["return"]();
-    } finally {
-      if (_d) throw _e;
-    }
-  }
-
-  return _arr;
-}
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime/helpers/esm/nonIterableRest.js":
-/*!********************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/esm/nonIterableRest.js ***!
-  \********************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _nonIterableRest)
-/* harmony export */ });
-function _nonIterableRest() {
-  throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-}
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime/helpers/esm/slicedToArray.js":
-/*!******************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/esm/slicedToArray.js ***!
-  \******************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _slicedToArray)
-/* harmony export */ });
-/* harmony import */ var _arrayWithHoles_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./arrayWithHoles.js */ "./node_modules/@babel/runtime/helpers/esm/arrayWithHoles.js");
-/* harmony import */ var _iterableToArrayLimit_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./iterableToArrayLimit.js */ "./node_modules/@babel/runtime/helpers/esm/iterableToArrayLimit.js");
-/* harmony import */ var _unsupportedIterableToArray_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./unsupportedIterableToArray.js */ "./node_modules/@babel/runtime/helpers/esm/unsupportedIterableToArray.js");
-/* harmony import */ var _nonIterableRest_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./nonIterableRest.js */ "./node_modules/@babel/runtime/helpers/esm/nonIterableRest.js");
-
-
-
-
-function _slicedToArray(arr, i) {
-  return (0,_arrayWithHoles_js__WEBPACK_IMPORTED_MODULE_0__["default"])(arr) || (0,_iterableToArrayLimit_js__WEBPACK_IMPORTED_MODULE_1__["default"])(arr, i) || (0,_unsupportedIterableToArray_js__WEBPACK_IMPORTED_MODULE_2__["default"])(arr, i) || (0,_nonIterableRest_js__WEBPACK_IMPORTED_MODULE_3__["default"])();
-}
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime/helpers/esm/unsupportedIterableToArray.js":
-/*!*******************************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/esm/unsupportedIterableToArray.js ***!
-  \*******************************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _unsupportedIterableToArray)
-/* harmony export */ });
-/* harmony import */ var _arrayLikeToArray_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./arrayLikeToArray.js */ "./node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js");
-
-function _unsupportedIterableToArray(o, minLen) {
-  if (!o) return;
-  if (typeof o === "string") return (0,_arrayLikeToArray_js__WEBPACK_IMPORTED_MODULE_0__["default"])(o, minLen);
-  var n = Object.prototype.toString.call(o).slice(8, -1);
-  if (n === "Object" && o.constructor) n = o.constructor.name;
-  if (n === "Map" || n === "Set") return Array.from(o);
-  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return (0,_arrayLikeToArray_js__WEBPACK_IMPORTED_MODULE_0__["default"])(o, minLen);
 }
 
 /***/ })
