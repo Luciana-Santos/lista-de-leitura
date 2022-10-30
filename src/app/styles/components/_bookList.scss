@@ -58,32 +58,6 @@
         }
       }
 
-      .progress {
-        p {
-          font-size: rem(10);
-          display: flex;
-          justify-content: space-between;
-          margin-bottom: rem(6);
-        }
-
-        &__bar {
-          height: 7px;
-          overflow: hidden;
-          background: var(--cl-dk-violet);
-          border-radius: rem(10);
-          position: relative;
-
-          span {
-            position: absolute;
-            top: 0;
-            left: 0;
-            min-width: 74%;
-            height: 100%;
-            background: var(--cl-md-blue);
-          }
-        }
-      }
-
       .book_list__item__btn {
         display: flex;
         place-items: center;

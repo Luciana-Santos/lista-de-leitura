@@ -38,36 +38,68 @@ body {
   background-color: var(--cl-vk-violet);
   color: var(--cl-body);
   font-family: var(--ff-nunito);
+  position: relative;
+}
+
+fieldset {
+  border: none;
+}
+
+input {
+  background-color: var(--cl-dk-violet);
+  padding-block: rem(8);
+  padding-inline: rem(6);
+  font-size: rem(16);
+  border-radius: rem(4);
+  width: 100%;
+  margin-bottom: rem(20);
+  color: var(--cl-white);
+
+  &::placeholder {
+    color: var(--cl-body);
+  }
+
+  &:focus,
+  &:hover {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--cl-vk-violet), 0 0 0 6px var(--cl-dk-violet);
+  }
 }
 
 .section {
   padding-block: rem(30);
 }
 
-.btn {
-  background: transparent;
-  border: none;
-  font-size: rem(16);
-  cursor: pointer;
-  padding-block: rem(10);
-}
+.form__btn {
+  justify-self: end;
+  display: flex;
+  gap: (20px);
 
-.btn--cancel {
-  color: var(--cl-body);
-  text-decoration: underline;
-}
+  .btn {
+    background: transparent;
+    border: none;
+    font-size: rem(16);
+    cursor: pointer;
+    padding-block: rem(10);
+  }
 
-.btn--red {
-  padding-inline: rem(30);
-  background: var(--cl-accent);
-  border-radius: rem(4);
-  transition: 0.3s ease;
-  color: var(--cl-white);
+  .btn--cancel {
+    color: var(--cl-body);
+    text-decoration: underline;
+  }
 
-  &:focus,
-  &:hover {
-    outline: none;
-    box-shadow: 0 0 0 3px var(--cl-vk-violet), 0 0 0 6px var(--cl-accent);
+  .btn--red {
+    padding-inline: rem(20);
+    background: var(--cl-accent);
+    border-radius: rem(4);
+    transition: 0.3s ease;
+    color: var(--cl-white);
+
+    &:focus,
+    &:hover {
+      outline: none;
+      box-shadow: 0 0 0 3px var(--cl-vk-violet), 0 0 0 6px var(--cl-accent);
+    }
   }
 }
 
@@ -84,4 +116,46 @@ body {
 
 .alert-success {
   background: var(--cl-success);
+}
+
+.progress {
+  p {
+    font-size: rem(10);
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: rem(6);
+  }
+
+  &__bar {
+    height: 7px;
+    overflow: hidden;
+    background: var(--cl-dk-violet);
+    border-radius: rem(10);
+    position: relative;
+
+    span {
+      position: absolute;
+      top: 0;
+      left: 0;
+      min-width: 74%;
+      height: 100%;
+      background: var(--cl-md-blue);
+    }
+  }
+}
+
+.previsao {
+  display: grid;
+  gap: rem(6);
+  font-size: rem(12);
+
+  i {
+    margin-right: rem(10);
+    font-size: rem(14);
+  }
+
+  .data-prevista {
+    color: var(--cl-white);
+    font-size: rem(16);
+  }
 }

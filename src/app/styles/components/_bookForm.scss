@@ -44,30 +44,6 @@
         display: block;
         margin-bottom: rem(6);
       }
-      input {
-        background-color: var(--cl-dk-violet);
-        padding-block: rem(8);
-        padding-inline: rem(6);
-        font-size: rem(16);
-        border-radius: rem(4);
-        width: 100%;
-        margin-bottom: rem(20);
-        color: var(--cl-white);
-
-        &::placeholder {
-          color: var(--cl-body);
-        }
-
-        &:focus,
-        &:hover {
-          outline: none;
-          box-shadow: 0 0 0 3px var(--cl-vk-violet),
-            0 0 0 6px var(--cl-dk-violet);
-        }
-      }
-      fieldset {
-        border: none;
-      }
 
       &--bottom-row {
         display: grid;
@@ -88,26 +64,6 @@
         background-color: var(--cl-dk-violet);
         margin-top: rem(30);
       }
-    }
-
-    &__previsao {
-      display: grid;
-      gap: rem(6);
-
-      i {
-        margin-right: rem(10);
-        font-size: rem(14);
-      }
-
-      .data-prevista {
-        color: var(--cl-white);
-      }
-    }
-
-    .form__btn {
-      justify-self: end;
-      display: flex;
-      gap: (20px);
     }
   }
 
