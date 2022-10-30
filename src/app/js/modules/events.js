@@ -1,31 +1,37 @@
 import UI from './UI';
 
 export default function initEvents() {
-  const btnAddBook = document.querySelector('[data-form="btn"]');
   const ImgPreview = document.querySelector('[data-form="imgPreview"]');
   const inputCover = document.querySelector('#cover');
+  const clearFormBtn = document.querySelector('[data-form="removeBtn"]');
 
-  document.addEventListener('DOMContentLoaded', UI.displayBooks);
-  btnAddBook.addEventListener('click', (e) => UI.addBookData(e));
-
-  const renderImgPreview = ({ target }) => {
+  // renderiza capa na área de input
+  const handleImgPreview = ({ target }) => {
+    const iconImg = document.querySelector('.fa-image');
     const image = document.createElement('img');
     image.src = target.result;
 
-    ImgPreview.innerHTML = '';
+    iconImg.style.display = 'none';
+    image.dataset.image = 'preview';
+    inputCover.setAttribute('disabled', '');
     ImgPreview.appendChild(image);
   };
 
-  const imgPreviewData = ({ target }) => {
+  // pega os dados do input da imagem
+  const handleImgPreviewData = ({ target }) => {
     const file = target.files[0];
     const reader = new FileReader();
 
     if (file) {
-      reader.addEventListener('load', (e) => renderImgPreview(e));
+      reader.addEventListener('load', (e) => handleImgPreview(e));
 
       reader.readAsDataURL(file);
     }
   };
+  inputCover.addEventListener('change', (e) => handleImgPreviewData(e));
 
-  inputCover.addEventListener('change', (e) => imgPreviewData(e));
+  clearFormBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    UI.clearInputFields();
+  });
 }

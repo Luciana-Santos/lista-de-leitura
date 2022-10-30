@@ -4,6 +4,7 @@ export default class UI {
   static displayBooks() {
     const StoreBooks = [
       {
+        id: 1234,
         title: 'Senhor dos Aneis: A sociedade do Anel',
         author: 'JRR Tolkien',
         pagesTotal: 576,
@@ -13,6 +14,7 @@ export default class UI {
           'https://i.pinimg.com/564x/38/9b/2a/389b2a9b8f9a154735f3096bc0d1f19a.jpg',
       },
       {
+        id: 12234,
         title: 'Perdido em Marte',
         author: 'Andy Weir',
         pagesTotal: 489,
@@ -61,14 +63,17 @@ export default class UI {
   }
 
   static getInputsValue() {
-    const inputCover = document.querySelector('#cover').value;
+    const id = new Date().getTime();
+    const inputCover = document.querySelector('#cover');
     const inputTitleValue = document.querySelector('#title').value;
     const inputAuthorValue = document.querySelector('#author').value;
     const inputTotalPagesValue = document.querySelector('#totalPages').value;
     const inputPagesPerDayValue = document.querySelector('#pagesPerDay').value;
+    const imgBlob = inputCover.nextElementSibling.attributes.src.nodeValue;
 
     return {
-      inputCover,
+      id,
+      imgBlob,
       inputTitleValue,
       inputAuthorValue,
       inputTotalPagesValue,
@@ -79,7 +84,8 @@ export default class UI {
   static addBookData(e) {
     e.preventDefault();
     const {
-      inputCover,
+      id,
+      imgBlob,
       inputTitleValue,
       inputAuthorValue,
       inputTotalPagesValue,
@@ -87,13 +93,29 @@ export default class UI {
     } = UI.getInputsValue();
 
     const book = new Book(
-      inputCover,
+      id,
+      imgBlob,
       inputTitleValue,
       inputAuthorValue,
       inputTotalPagesValue,
       inputPagesPerDayValue,
     );
 
-    console.log(book);
+    console.log(UI.getInputsValue());
+    UI.addBookToList(book);
+
+    UI.clearInputFields();
+  }
+
+  static clearInputFields() {
+    const form = document.querySelector('[data-form="form"]');
+    const inputCover = document.querySelector('#cover');
+    const iconImg = document.querySelector('.fa-image');
+    const imgPreview = document.querySelector('[data-image="preview"]');
+
+    imgPreview && imgPreview.remove();
+    iconImg.style.display = 'block';
+    inputCover.removeAttribute('disabled');
+    form.reset();
   }
 }
