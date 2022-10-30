@@ -1,31 +1,9 @@
 import Book from './Book';
+import Store from './Store';
 
 export default class UI {
   static displayBooks() {
-    const StoreBooks = [
-      {
-        id: 1234,
-        title: 'Senhor dos Aneis: A sociedade do Anel',
-        author: 'JRR Tolkien',
-        pagesTotal: 576,
-        pagesPerDay: 60,
-        prevision: '04/11/2022',
-        cover:
-          'https://i.pinimg.com/564x/38/9b/2a/389b2a9b8f9a154735f3096bc0d1f19a.jpg',
-      },
-      {
-        id: 12234,
-        title: 'Perdido em Marte',
-        author: 'Andy Weir',
-        pagesTotal: 489,
-        pagesPerDay: 40,
-        prevision: '01/11/2022',
-        cover:
-          'https://1.bp.blogspot.com/-BYonzSS5IQg/VVnWtaZYLII/AAAAAAAACI4/2NLQXx0Jaso/s1600/Book-Review-The-Martian.jpg',
-      },
-    ];
-
-    const books = StoreBooks;
+    const books = Store.getBooks();
 
     books.forEach((book) => UI.addBookToList(book));
   }
@@ -63,7 +41,7 @@ export default class UI {
   }
 
   static getInputsValue() {
-    const id = new Date().getTime();
+    const id = Math.floor(Math.random()) * 7;
     const inputCover = document.querySelector('#cover');
     const inputTitleValue = document.querySelector('#title').value;
     const inputAuthorValue = document.querySelector('#author').value;
@@ -82,6 +60,8 @@ export default class UI {
   }
 
   static addBookData(e) {
+    const formContainer = document.querySelector('[data-form="container"]');
+
     e.preventDefault();
     const {
       id,
@@ -99,7 +79,13 @@ export default class UI {
       inputTotalPagesValue === '' ||
       inputPagesPerDayValue === ''
     ) {
-      UI.showAlert('Por favor, preencha os campos marcados com *.', 'error');
+      // alerta de error
+      UI.showAlert(
+        'Por favor, preecha os campos marcados com *.',
+        'error',
+        formContainer,
+        'beforeend',
+      );
     } else {
       const book = new Book(
         id,
@@ -110,10 +96,17 @@ export default class UI {
         inputPagesPerDayValue,
       );
 
-      console.log(UI.getInputsValue());
+      // renderiza livro
       UI.addBookToList(book);
 
+      // adiciona livro no localStorage
+      Store.addBook(book);
+
+      // limpar campos do form
       UI.clearInputFields();
+
+      // alerta de sucesso
+      UI.showAlert('Livro adicionado!', 'success', formContainer, 'beforeend');
     }
   }
 
@@ -132,19 +125,26 @@ export default class UI {
   static deleteBook(element) {
     if (element.classList.contains('delete')) {
       element.parentElement.parentElement.parentElement.remove();
+
+      // remove livro do localStorage
+      const { id } = UI.getInputsValue();
+      Store.removeBook(id);
+
+      // alerta de error
+      const bookList = document.querySelector('[data-book="list"]');
+      UI.showAlert('Livro removido!', 'success', bookList, 'afterbegin');
     }
   }
 
-  static showAlert(message, className) {
+  static showAlert(message, className, container, position) {
     const messageDiv = document.createElement('div');
     messageDiv.className = `alert alert-${className}`;
     messageDiv.appendChild(document.createTextNode(message));
-    const formContainer = document.querySelector('[data-form="container"]');
 
-    formContainer.insertAdjacentElement('beforeend', messageDiv);
+    container.insertAdjacentElement(position, messageDiv);
 
-    // setTimeout(() => {
-    //   document.querySelector('.alert').remove();
-    // }, 3000);
+    setTimeout(() => {
+      document.querySelector('.alert').remove();
+    }, 3000);
   }
 }

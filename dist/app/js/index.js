@@ -33,6 +33,58 @@ var Book = /*#__PURE__*/(0,_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_
 
 /***/ }),
 
+/***/ "./src/app/js/modules/Store.js":
+/*!*************************************!*\
+  !*** ./src/app/js/modules/Store.js ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Store)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/@babel/runtime/helpers/esm/classCallCheck.js");
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/esm/createClass.js");
+
+
+
+var Store = /*#__PURE__*/function () {
+  function Store() {
+    (0,_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__["default"])(this, Store);
+  }
+
+  (0,_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(Store, null, [{
+    key: "getBooks",
+    value: function getBooks() {
+      var books;
+      if (localStorage.getItem('books') === null) books = [];else books = JSON.parse(localStorage.getItem('books'));
+      return books;
+    }
+  }, {
+    key: "addBook",
+    value: function addBook(book) {
+      var books = Store.getBooks();
+      books.push(book);
+      localStorage.setItem('books', JSON.stringify(books));
+    }
+  }, {
+    key: "removeBook",
+    value: function removeBook(id) {
+      var books = Store.getBooks();
+      books.forEach(function (book, index) {
+        if (book.id === id) books.splice(index, 1);
+      });
+      localStorage.setItem('books', JSON.stringify(books));
+    }
+  }]);
+
+  return Store;
+}();
+
+
+
+/***/ }),
+
 /***/ "./src/app/js/modules/UI.js":
 /*!**********************************!*\
   !*** ./src/app/js/modules/UI.js ***!
@@ -46,6 +98,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/@babel/runtime/helpers/esm/classCallCheck.js");
 /* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/esm/createClass.js");
 /* harmony import */ var _Book__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Book */ "./src/app/js/modules/Book.js");
+/* harmony import */ var _Store__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Store */ "./src/app/js/modules/Store.js");
+
 
 
 
@@ -58,24 +112,7 @@ var UI = /*#__PURE__*/function () {
   (0,_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(UI, null, [{
     key: "displayBooks",
     value: function displayBooks() {
-      var StoreBooks = [{
-        id: 1234,
-        title: 'Senhor dos Aneis: A sociedade do Anel',
-        author: 'JRR Tolkien',
-        pagesTotal: 576,
-        pagesPerDay: 60,
-        prevision: '04/11/2022',
-        cover: 'https://i.pinimg.com/564x/38/9b/2a/389b2a9b8f9a154735f3096bc0d1f19a.jpg'
-      }, {
-        id: 12234,
-        title: 'Perdido em Marte',
-        author: 'Andy Weir',
-        pagesTotal: 489,
-        pagesPerDay: 40,
-        prevision: '01/11/2022',
-        cover: 'https://1.bp.blogspot.com/-BYonzSS5IQg/VVnWtaZYLII/AAAAAAAACI4/2NLQXx0Jaso/s1600/Book-Review-The-Martian.jpg'
-      }];
-      var books = StoreBooks;
+      var books = _Store__WEBPACK_IMPORTED_MODULE_3__["default"].getBooks();
       books.forEach(function (book) {
         return UI.addBookToList(book);
       });
@@ -95,7 +132,7 @@ var UI = /*#__PURE__*/function () {
     value: function getInputsValue() {
       var _inputCover$nextEleme;
 
-      var id = new Date().getTime();
+      var id = Math.floor(Math.random()) * 7;
       var inputCover = document.querySelector('#cover');
       var inputTitleValue = document.querySelector('#title').value;
       var inputAuthorValue = document.querySelector('#author').value;
@@ -114,6 +151,7 @@ var UI = /*#__PURE__*/function () {
   }, {
     key: "addBookData",
     value: function addBookData(e) {
+      var formContainer = document.querySelector('[data-form="container"]');
       e.preventDefault();
 
       var _UI$getInputsValue = UI.getInputsValue(),
@@ -126,12 +164,18 @@ var UI = /*#__PURE__*/function () {
 
 
       if (id === '' || inputTitleValue === '' || inputTotalPagesValue === '' || inputPagesPerDayValue === '') {
-        UI.showAlert('Por favor, preencha os campos marcados com *.', 'error');
+        // alerta de error
+        UI.showAlert('Por favor, preecha os campos marcados com *.', 'error', formContainer, 'beforeend');
       } else {
-        var book = new _Book__WEBPACK_IMPORTED_MODULE_2__["default"](id, imgBlob, inputTitleValue, inputAuthorValue, inputTotalPagesValue, inputPagesPerDayValue);
-        console.log(UI.getInputsValue());
-        UI.addBookToList(book);
-        UI.clearInputFields();
+        var book = new _Book__WEBPACK_IMPORTED_MODULE_2__["default"](id, imgBlob, inputTitleValue, inputAuthorValue, inputTotalPagesValue, inputPagesPerDayValue); // renderiza livro
+
+        UI.addBookToList(book); // adiciona livro no localStorage
+
+        _Store__WEBPACK_IMPORTED_MODULE_3__["default"].addBook(book); // limpar campos do form
+
+        UI.clearInputFields(); // alerta de sucesso
+
+        UI.showAlert('Livro adicionado!', 'success', formContainer, 'beforeend');
       }
     }
   }, {
@@ -150,19 +194,27 @@ var UI = /*#__PURE__*/function () {
     key: "deleteBook",
     value: function deleteBook(element) {
       if (element.classList.contains('delete')) {
-        element.parentElement.parentElement.parentElement.remove();
+        element.parentElement.parentElement.parentElement.remove(); // remove livro do localStorage
+
+        var _UI$getInputsValue2 = UI.getInputsValue(),
+            id = _UI$getInputsValue2.id;
+
+        _Store__WEBPACK_IMPORTED_MODULE_3__["default"].removeBook(id); // alerta de error
+
+        var bookList = document.querySelector('[data-book="list"]');
+        UI.showAlert('Livro removido!', 'success', bookList, 'afterbegin');
       }
     }
   }, {
     key: "showAlert",
-    value: function showAlert(message, className) {
+    value: function showAlert(message, className, container, position) {
       var messageDiv = document.createElement('div');
       messageDiv.className = "alert alert-".concat(className);
       messageDiv.appendChild(document.createTextNode(message));
-      var formContainer = document.querySelector('[data-form="container"]');
-      formContainer.insertAdjacentElement('beforeend', messageDiv); // setTimeout(() => {
-      //   document.querySelector('.alert').remove();
-      // }, 3000);
+      container.insertAdjacentElement(position, messageDiv);
+      setTimeout(function () {
+        document.querySelector('.alert').remove();
+      }, 3000);
     }
   }]);
 
@@ -222,7 +274,8 @@ function initEvents() {
   clearFormBtn.addEventListener('click', function (e) {
     e.preventDefault();
     _UI__WEBPACK_IMPORTED_MODULE_0__["default"].clearInputFields();
-  });
+  }); // remove livro renderizado
+
   bookList.addEventListener('click', function (_ref3) {
     var target = _ref3.target;
     return _UI__WEBPACK_IMPORTED_MODULE_0__["default"].deleteBook(target);

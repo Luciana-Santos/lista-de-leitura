@@ -36,5 +36,6 @@ export default function initEvents() {
     UI.clearInputFields();
   });
 
+  // remove livro renderizado
   bookList.addEventListener('click', ({ target }) => UI.deleteBook(target));
 }
