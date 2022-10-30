@@ -98,7 +98,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/@babel/runtime/helpers/esm/classCallCheck.js");
 /* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/esm/createClass.js");
 /* harmony import */ var _Book__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Book */ "./src/app/js/modules/Book.js");
-/* harmony import */ var _Store__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Store */ "./src/app/js/modules/Store.js");
+/* harmony import */ var _dateFormating__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./dateFormating */ "./src/app/js/modules/dateFormating.js");
+/* harmony import */ var _Store__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Store */ "./src/app/js/modules/Store.js");
+
 
 
 
@@ -112,7 +114,7 @@ var UI = /*#__PURE__*/function () {
   (0,_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(UI, null, [{
     key: "displayBooks",
     value: function displayBooks() {
-      var books = _Store__WEBPACK_IMPORTED_MODULE_3__["default"].getBooks();
+      var books = _Store__WEBPACK_IMPORTED_MODULE_4__["default"].getBooks();
       books.forEach(function (book) {
         return UI.addBookToList(book);
       });
@@ -132,20 +134,23 @@ var UI = /*#__PURE__*/function () {
     value: function getInputsValue() {
       var _inputCover$nextEleme;
 
-      var id = Math.floor(Math.random()) * 7;
       var inputCover = document.querySelector('#cover');
       var inputTitleValue = document.querySelector('#title').value;
       var inputAuthorValue = document.querySelector('#author').value;
       var inputTotalPagesValue = document.querySelector('#totalPages').value;
       var inputPagesPerDayValue = document.querySelector('#pagesPerDay').value;
       var imgBlob = inputCover === null || inputCover === void 0 ? void 0 : (_inputCover$nextEleme = inputCover.nextElementSibling) === null || _inputCover$nextEleme === void 0 ? void 0 : _inputCover$nextEleme.attributes.src.nodeValue;
+      var datePrevision = (0,_dateFormating__WEBPACK_IMPORTED_MODULE_3__["default"])(inputTotalPagesValue, inputPagesPerDayValue);
+      var id = Date.now();
+      console.log(datePrevision);
       return {
         id: id,
         imgBlob: imgBlob,
         inputTitleValue: inputTitleValue,
         inputAuthorValue: inputAuthorValue,
         inputTotalPagesValue: inputTotalPagesValue,
-        inputPagesPerDayValue: inputPagesPerDayValue
+        inputPagesPerDayValue: inputPagesPerDayValue,
+        datePrevision: datePrevision
       };
     }
   }, {
@@ -160,18 +165,19 @@ var UI = /*#__PURE__*/function () {
           inputTitleValue = _UI$getInputsValue.inputTitleValue,
           inputAuthorValue = _UI$getInputsValue.inputAuthorValue,
           inputTotalPagesValue = _UI$getInputsValue.inputTotalPagesValue,
-          inputPagesPerDayValue = _UI$getInputsValue.inputPagesPerDayValue; // validate
+          inputPagesPerDayValue = _UI$getInputsValue.inputPagesPerDayValue,
+          datePrevision = _UI$getInputsValue.datePrevision; // validate
 
 
-      if (id === '' || inputTitleValue === '' || inputTotalPagesValue === '' || inputPagesPerDayValue === '') {
+      if (inputTitleValue === '' || inputTotalPagesValue === '' || inputPagesPerDayValue === '') {
         // alerta de error
         UI.showAlert('Por favor, preecha os campos marcados com *.', 'error', formContainer, 'beforeend');
       } else {
-        var book = new _Book__WEBPACK_IMPORTED_MODULE_2__["default"](id, imgBlob, inputTitleValue, inputAuthorValue, inputTotalPagesValue, inputPagesPerDayValue); // renderiza livro
+        var book = new _Book__WEBPACK_IMPORTED_MODULE_2__["default"](id, imgBlob, inputTitleValue, inputAuthorValue, inputTotalPagesValue, inputPagesPerDayValue, datePrevision); // renderiza livro
 
         UI.addBookToList(book); // adiciona livro no localStorage
 
-        _Store__WEBPACK_IMPORTED_MODULE_3__["default"].addBook(book); // limpar campos do form
+        _Store__WEBPACK_IMPORTED_MODULE_4__["default"].addBook(book); // limpar campos do form
 
         UI.clearInputFields(); // alerta de sucesso
 
@@ -186,6 +192,8 @@ var UI = /*#__PURE__*/function () {
       var iconImg = document.querySelector('.fa-image');
       var imgPreview = document.querySelector('[data-image="preview"]');
       imgPreview && imgPreview.remove();
+      var datePrevision = document.querySelector('[data-from="prevision"]');
+      datePrevision.innerText = '00/00/0000';
       iconImg.style.display = 'block';
       inputCover.removeAttribute('disabled');
       form.reset();
@@ -199,7 +207,8 @@ var UI = /*#__PURE__*/function () {
         var _UI$getInputsValue2 = UI.getInputsValue(),
             id = _UI$getInputsValue2.id;
 
-        _Store__WEBPACK_IMPORTED_MODULE_3__["default"].removeBook(id); // alerta de error
+        console.log(id);
+        _Store__WEBPACK_IMPORTED_MODULE_4__["default"].removeBook(id); // alerta de error
 
         var bookList = document.querySelector('[data-book="list"]');
         UI.showAlert('Livro removido!', 'success', bookList, 'afterbegin');
@@ -214,7 +223,7 @@ var UI = /*#__PURE__*/function () {
       container.insertAdjacentElement(position, messageDiv);
       setTimeout(function () {
         document.querySelector('.alert').remove();
-      }, 3000);
+      }, 2000);
     }
   }]);
 
@@ -222,6 +231,41 @@ var UI = /*#__PURE__*/function () {
 }();
 
 
+
+/***/ }),
+
+/***/ "./src/app/js/modules/dateFormating.js":
+/*!*********************************************!*\
+  !*** ./src/app/js/modules/dateFormating.js ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ dateFormating)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "./node_modules/@babel/runtime/helpers/esm/slicedToArray.js");
+
+
+var daysToSeconds = function daysToSeconds(days) {
+  return Math.round(days * 25 * 60 * 60);
+};
+
+function dateFormating(totalPages, pagesPerDay) {
+  var dateNow = new Date();
+  var previsionDays = totalPages / pagesPerDay;
+  var secondsFromDays = daysToSeconds(previsionDays);
+  dateNow.setSeconds(dateNow.getSeconds() + secondsFromDays);
+
+  var _dateNow$toLocaleDate = dateNow.toLocaleDateString('pt-BR').split('/'),
+      _dateNow$toLocaleDate2 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__["default"])(_dateNow$toLocaleDate, 3),
+      dia = _dateNow$toLocaleDate2[0],
+      mes = _dateNow$toLocaleDate2[1],
+      ano = _dateNow$toLocaleDate2[2];
+
+  console.log(dia, mes, ano);
+  return "".concat(dia, "/").concat(mes, "/").concat(ano);
+}
 
 /***/ }),
 
@@ -235,7 +279,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ initEvents)
 /* harmony export */ });
-/* harmony import */ var _UI__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./UI */ "./src/app/js/modules/UI.js");
+/* harmony import */ var _dateFormating__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./dateFormating */ "./src/app/js/modules/dateFormating.js");
+/* harmony import */ var _UI__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./UI */ "./src/app/js/modules/UI.js");
+
 
 function initEvents() {
   var ImgPreview = document.querySelector('[data-form="imgPreview"]');
@@ -273,13 +319,58 @@ function initEvents() {
   });
   clearFormBtn.addEventListener('click', function (e) {
     e.preventDefault();
-    _UI__WEBPACK_IMPORTED_MODULE_0__["default"].clearInputFields();
+    _UI__WEBPACK_IMPORTED_MODULE_1__["default"].clearInputFields();
   }); // remove livro renderizado
 
   bookList.addEventListener('click', function (_ref3) {
     var target = _ref3.target;
-    return _UI__WEBPACK_IMPORTED_MODULE_0__["default"].deleteBook(target);
+    return _UI__WEBPACK_IMPORTED_MODULE_1__["default"].deleteBook(target);
   });
+  var inputTotalPagesValue = document.querySelector('#totalPages').value;
+  var inputPagesPerDayValue = document.querySelector('#pagesPerDay');
+  var datePrevision = document.querySelector('[data-from="prevision"]');
+  inputPagesPerDayValue.addEventListener('change', function (_ref4) {
+    var target = _ref4.target;
+    datePrevision.innerText = (0,_dateFormating__WEBPACK_IMPORTED_MODULE_0__["default"])(inputTotalPagesValue, target.value);
+  });
+}
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _arrayLikeToArray)
+/* harmony export */ });
+function _arrayLikeToArray(arr, len) {
+  if (len == null || len > arr.length) len = arr.length;
+
+  for (var i = 0, arr2 = new Array(len); i < len; i++) {
+    arr2[i] = arr[i];
+  }
+
+  return arr2;
+}
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/arrayWithHoles.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/arrayWithHoles.js ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _arrayWithHoles)
+/* harmony export */ });
+function _arrayWithHoles(arr) {
+  if (Array.isArray(arr)) return arr;
 }
 
 /***/ }),
@@ -329,6 +420,111 @@ function _createClass(Constructor, protoProps, staticProps) {
     writable: false
   });
   return Constructor;
+}
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/iterableToArrayLimit.js":
+/*!*************************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/iterableToArrayLimit.js ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _iterableToArrayLimit)
+/* harmony export */ });
+function _iterableToArrayLimit(arr, i) {
+  var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"];
+
+  if (_i == null) return;
+  var _arr = [];
+  var _n = true;
+  var _d = false;
+
+  var _s, _e;
+
+  try {
+    for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) {
+      _arr.push(_s.value);
+
+      if (i && _arr.length === i) break;
+    }
+  } catch (err) {
+    _d = true;
+    _e = err;
+  } finally {
+    try {
+      if (!_n && _i["return"] != null) _i["return"]();
+    } finally {
+      if (_d) throw _e;
+    }
+  }
+
+  return _arr;
+}
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/nonIterableRest.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/nonIterableRest.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _nonIterableRest)
+/* harmony export */ });
+function _nonIterableRest() {
+  throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/slicedToArray.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/slicedToArray.js ***!
+  \******************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _slicedToArray)
+/* harmony export */ });
+/* harmony import */ var _arrayWithHoles_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./arrayWithHoles.js */ "./node_modules/@babel/runtime/helpers/esm/arrayWithHoles.js");
+/* harmony import */ var _iterableToArrayLimit_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./iterableToArrayLimit.js */ "./node_modules/@babel/runtime/helpers/esm/iterableToArrayLimit.js");
+/* harmony import */ var _unsupportedIterableToArray_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./unsupportedIterableToArray.js */ "./node_modules/@babel/runtime/helpers/esm/unsupportedIterableToArray.js");
+/* harmony import */ var _nonIterableRest_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./nonIterableRest.js */ "./node_modules/@babel/runtime/helpers/esm/nonIterableRest.js");
+
+
+
+
+function _slicedToArray(arr, i) {
+  return (0,_arrayWithHoles_js__WEBPACK_IMPORTED_MODULE_0__["default"])(arr) || (0,_iterableToArrayLimit_js__WEBPACK_IMPORTED_MODULE_1__["default"])(arr, i) || (0,_unsupportedIterableToArray_js__WEBPACK_IMPORTED_MODULE_2__["default"])(arr, i) || (0,_nonIterableRest_js__WEBPACK_IMPORTED_MODULE_3__["default"])();
+}
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/unsupportedIterableToArray.js":
+/*!*******************************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/unsupportedIterableToArray.js ***!
+  \*******************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _unsupportedIterableToArray)
+/* harmony export */ });
+/* harmony import */ var _arrayLikeToArray_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./arrayLikeToArray.js */ "./node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js");
+
+function _unsupportedIterableToArray(o, minLen) {
+  if (!o) return;
+  if (typeof o === "string") return (0,_arrayLikeToArray_js__WEBPACK_IMPORTED_MODULE_0__["default"])(o, minLen);
+  var n = Object.prototype.toString.call(o).slice(8, -1);
+  if (n === "Object" && o.constructor) n = o.constructor.name;
+  if (n === "Map" || n === "Set") return Array.from(o);
+  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return (0,_arrayLikeToArray_js__WEBPACK_IMPORTED_MODULE_0__["default"])(o, minLen);
 }
 
 /***/ })

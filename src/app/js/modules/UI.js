@@ -1,4 +1,5 @@
 import Book from './Book';
+import dateFormating from './dateFormating';
 import Store from './Store';
 
 export default class UI {
@@ -41,13 +42,18 @@ export default class UI {
   }
 
   static getInputsValue() {
-    const id = Math.floor(Math.random()) * 7;
     const inputCover = document.querySelector('#cover');
     const inputTitleValue = document.querySelector('#title').value;
     const inputAuthorValue = document.querySelector('#author').value;
     const inputTotalPagesValue = document.querySelector('#totalPages').value;
     const inputPagesPerDayValue = document.querySelector('#pagesPerDay').value;
     const imgBlob = inputCover?.nextElementSibling?.attributes.src.nodeValue;
+    const datePrevision = dateFormating(
+      inputTotalPagesValue,
+      inputPagesPerDayValue,
+    );
+    const id = Date.now();
+    console.log(datePrevision);
 
     return {
       id,
@@ -56,6 +62,7 @@ export default class UI {
       inputAuthorValue,
       inputTotalPagesValue,
       inputPagesPerDayValue,
+      datePrevision,
     };
   }
 
@@ -70,11 +77,11 @@ export default class UI {
       inputAuthorValue,
       inputTotalPagesValue,
       inputPagesPerDayValue,
+      datePrevision,
     } = UI.getInputsValue();
 
     // validate
     if (
-      id === '' ||
       inputTitleValue === '' ||
       inputTotalPagesValue === '' ||
       inputPagesPerDayValue === ''
@@ -94,6 +101,7 @@ export default class UI {
         inputAuthorValue,
         inputTotalPagesValue,
         inputPagesPerDayValue,
+        datePrevision,
       );
 
       // renderiza livro
@@ -117,6 +125,8 @@ export default class UI {
     const imgPreview = document.querySelector('[data-image="preview"]');
 
     imgPreview && imgPreview.remove();
+    const datePrevision = document.querySelector('[data-from="prevision"]');
+    datePrevision.innerText = '00/00/0000';
     iconImg.style.display = 'block';
     inputCover.removeAttribute('disabled');
     form.reset();
@@ -128,6 +138,7 @@ export default class UI {
 
       // remove livro do localStorage
       const { id } = UI.getInputsValue();
+      console.log(id);
       Store.removeBook(id);
 
       // alerta de error
@@ -145,6 +156,6 @@ export default class UI {
 
     setTimeout(() => {
       document.querySelector('.alert').remove();
-    }, 3000);
+    }, 2000);
   }
 }

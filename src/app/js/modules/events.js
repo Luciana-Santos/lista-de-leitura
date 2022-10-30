@@ -1,3 +1,4 @@
+import dateFormating from './dateFormating';
 import UI from './UI';
 
 export default function initEvents() {
@@ -38,4 +39,12 @@ export default function initEvents() {
 
   // remove livro renderizado
   bookList.addEventListener('click', ({ target }) => UI.deleteBook(target));
+
+  const inputTotalPagesValue = document.querySelector('#totalPages').value;
+  const inputPagesPerDayValue = document.querySelector('#pagesPerDay');
+  const datePrevision = document.querySelector('[data-from="prevision"]');
+
+  inputPagesPerDayValue.addEventListener('change', ({ target }) => {
+    datePrevision.innerText = dateFormating(inputTotalPagesValue, target.value);
+  });
 }
