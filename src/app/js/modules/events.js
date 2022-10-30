@@ -4,6 +4,7 @@ export default function initEvents() {
   const ImgPreview = document.querySelector('[data-form="imgPreview"]');
   const inputCover = document.querySelector('#cover');
   const clearFormBtn = document.querySelector('[data-form="removeBtn"]');
+  const bookList = document.querySelector('[data-book="list"]');
 
   // renderiza capa na área de input
   const handleImgPreview = ({ target }) => {
@@ -34,4 +35,6 @@ export default function initEvents() {
     e.preventDefault();
     UI.clearInputFields();
   });
+
+  bookList.addEventListener('click', ({ target }) => UI.deleteBook(target));
 }

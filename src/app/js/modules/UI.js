@@ -92,19 +92,29 @@ export default class UI {
       inputPagesPerDayValue,
     } = UI.getInputsValue();
 
-    const book = new Book(
-      id,
-      imgBlob,
-      inputTitleValue,
-      inputAuthorValue,
-      inputTotalPagesValue,
-      inputPagesPerDayValue,
-    );
+    // validate
+    if (
+      id === '' ||
+      inputTitleValue === '' ||
+      inputTotalPagesValue === '' ||
+      inputPagesPerDayValue === ''
+    ) {
+      UI.showAlert('Por favor, preencha os campos marcados com *.', 'error');
+    } else {
+      const book = new Book(
+        id,
+        imgBlob,
+        inputTitleValue,
+        inputAuthorValue,
+        inputTotalPagesValue,
+        inputPagesPerDayValue,
+      );
 
-    console.log(UI.getInputsValue());
-    UI.addBookToList(book);
+      console.log(UI.getInputsValue());
+      UI.addBookToList(book);
 
-    UI.clearInputFields();
+      UI.clearInputFields();
+    }
   }
 
   static clearInputFields() {
@@ -117,5 +127,24 @@ export default class UI {
     iconImg.style.display = 'block';
     inputCover.removeAttribute('disabled');
     form.reset();
+  }
+
+  static deleteBook(element) {
+    if (element.classList.contains('delete')) {
+      element.parentElement.parentElement.parentElement.remove();
+    }
+  }
+
+  static showAlert(message, className) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `alert alert-${className}`;
+    messageDiv.appendChild(document.createTextNode(message));
+    const formContainer = document.querySelector('[data-form="container"]');
+
+    formContainer.insertAdjacentElement('beforeend', messageDiv);
+
+    // setTimeout(() => {
+    //   document.querySelector('.alert').remove();
+    // }, 3000);
   }
 }

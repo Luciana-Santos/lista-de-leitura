@@ -122,12 +122,17 @@ var UI = /*#__PURE__*/function () {
           inputTitleValue = _UI$getInputsValue.inputTitleValue,
           inputAuthorValue = _UI$getInputsValue.inputAuthorValue,
           inputTotalPagesValue = _UI$getInputsValue.inputTotalPagesValue,
-          inputPagesPerDayValue = _UI$getInputsValue.inputPagesPerDayValue;
+          inputPagesPerDayValue = _UI$getInputsValue.inputPagesPerDayValue; // validate
 
-      var book = new _Book__WEBPACK_IMPORTED_MODULE_2__["default"](id, imgBlob, inputTitleValue, inputAuthorValue, inputTotalPagesValue, inputPagesPerDayValue);
-      console.log(UI.getInputsValue());
-      UI.addBookToList(book);
-      UI.clearInputFields();
+
+      if (id === '' || inputTitleValue === '' || inputTotalPagesValue === '' || inputPagesPerDayValue === '') {
+        UI.showAlert('Por favor, preencha os campos marcados com *.', 'error');
+      } else {
+        var book = new _Book__WEBPACK_IMPORTED_MODULE_2__["default"](id, imgBlob, inputTitleValue, inputAuthorValue, inputTotalPagesValue, inputPagesPerDayValue);
+        console.log(UI.getInputsValue());
+        UI.addBookToList(book);
+        UI.clearInputFields();
+      }
     }
   }, {
     key: "clearInputFields",
@@ -140,6 +145,24 @@ var UI = /*#__PURE__*/function () {
       iconImg.style.display = 'block';
       inputCover.removeAttribute('disabled');
       form.reset();
+    }
+  }, {
+    key: "deleteBook",
+    value: function deleteBook(element) {
+      if (element.classList.contains('delete')) {
+        element.parentElement.parentElement.parentElement.remove();
+      }
+    }
+  }, {
+    key: "showAlert",
+    value: function showAlert(message, className) {
+      var messageDiv = document.createElement('div');
+      messageDiv.className = "alert alert-".concat(className);
+      messageDiv.appendChild(document.createTextNode(message));
+      var formContainer = document.querySelector('[data-form="container"]');
+      formContainer.insertAdjacentElement('beforeend', messageDiv); // setTimeout(() => {
+      //   document.querySelector('.alert').remove();
+      // }, 3000);
     }
   }]);
 
@@ -165,7 +188,8 @@ __webpack_require__.r(__webpack_exports__);
 function initEvents() {
   var ImgPreview = document.querySelector('[data-form="imgPreview"]');
   var inputCover = document.querySelector('#cover');
-  var clearFormBtn = document.querySelector('[data-form="removeBtn"]'); // renderiza capa na área de input
+  var clearFormBtn = document.querySelector('[data-form="removeBtn"]');
+  var bookList = document.querySelector('[data-book="list"]'); // renderiza capa na área de input
 
   var handleImgPreview = function handleImgPreview(_ref) {
     var target = _ref.target;
@@ -198,6 +222,10 @@ function initEvents() {
   clearFormBtn.addEventListener('click', function (e) {
     e.preventDefault();
     _UI__WEBPACK_IMPORTED_MODULE_0__["default"].clearInputFields();
+  });
+  bookList.addEventListener('click', function (_ref3) {
+    var target = _ref3.target;
+    return _UI__WEBPACK_IMPORTED_MODULE_0__["default"].deleteBook(target);
   });
 }
 
