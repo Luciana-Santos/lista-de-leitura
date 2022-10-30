@@ -70,25 +70,28 @@ input:focus, input:hover {
   display: flex;
   gap: 20px;
 }
-.form__btn .btn {
+
+.btn {
   background: transparent;
   border: none;
   font-size: 1rem;
   cursor: pointer;
   padding-block: 0.625rem;
 }
-.form__btn .btn--cancel {
+
+.btn--cancel {
   color: var(--cl-body);
   text-decoration: underline;
 }
-.form__btn .btn--red {
+
+.btn--red {
   padding-inline: 1.25rem;
   background: var(--cl-accent);
   border-radius: 0.25rem;
   transition: 0.3s ease;
   color: var(--cl-white);
 }
-.form__btn .btn--red:focus, .form__btn .btn--red:hover {
+.btn--red:focus, .btn--red:hover {
   outline: none;
   box-shadow: 0 0 0 3px var(--cl-vk-violet), 0 0 0 6px var(--cl-accent);
 }
