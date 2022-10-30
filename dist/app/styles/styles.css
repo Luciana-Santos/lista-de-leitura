@@ -227,7 +227,7 @@ body {
   background: var(--cl-vk-violet);
   width: 6.75rem;
   font-size: 0.75rem;
-  padding-inline: 0.375rem;
+  padding-inline: 0.5rem;
   padding-block: 0.25rem;
   line-height: 1.125rem;
   opacity: 0;
