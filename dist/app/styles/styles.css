@@ -208,7 +208,7 @@ body {
 .add_book__form .form__btn {
   justify-self: end;
   display: flex;
-  gap: 40px;
+  gap: 20px;
 }
 .add_book .book_info__tooltip_container {
   position: relative;
