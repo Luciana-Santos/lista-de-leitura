@@ -22,4 +22,16 @@ export default class Store {
 
     localStorage.setItem('books', JSON.stringify(books));
   }
+
+  static updateBook(id, book) {
+    const books = Store.getBooks();
+
+    books.forEach((bookEl, index) => {
+      if (bookEl.id === id) {
+        books.splice(index, 1);
+        books.push(book);
+      }
+      localStorage.setItem('books', JSON.stringify(books));
+    });
+  }
 }

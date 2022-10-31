@@ -25,9 +25,11 @@ export default class UI {
           book.prevision
         }</span></p>
         <div class="progress">
-          <p>306 páginas de ${book.pagesTotal} <span>74%</span></p>
+          <p>?? páginas de ${book.pagesTotal} <span data-book="percentage">${
+      book.percentage
+    }%</span></p>
           <div class="progress__bar">
-            <span></span>
+            <span data-book="progressBar"></span>
           </div>
         </div>
 
@@ -40,6 +42,15 @@ export default class UI {
     bookItem.dataset.book = 'item';
 
     bookList.insertAdjacentElement('afterbegin', bookItem);
+
+    const progressBar = document.querySelector('[data-book="progressBar"]');
+    const percentageHolder = document.querySelector('[data-book="percentage"]');
+    UI.updateProgressBar(
+      book.currPag,
+      book.pagesTotal,
+      progressBar,
+      percentageHolder,
+    );
   }
 
   static getInputsValue() {
@@ -139,7 +150,6 @@ export default class UI {
 
       // remove livro do localStorage
       const { id } = UI.getInputsValue();
-      console.log(id);
       Store.removeBook(id);
 
       // alerta de error
@@ -176,8 +186,10 @@ export default class UI {
 
         <form class="modal__form" data-modal="form">
           <fieldset>
-            <label for="actPag">Pág. Atual:*</label>
-            <input type="number" id="actPag" name="actPag" placeholder="89" date-modal="prevision">
+            <label for="currPag">Pág. Atual:*</label>
+            <input type="number" id="currPag" name="currPag" placeholder="${
+              book.currPag || 60
+            }" date-modal="prevision">
           </fieldset>
           
           <div>
@@ -191,9 +203,9 @@ export default class UI {
           <p class="data-prevista" data-modal="date">${book.prevision}</p>
 
           <div class="progress">
-            <p>74%</p>
+            <p data-modal="percentage">0%</p>
             <div class="progress__bar">
-              <span></span>
+              <span data-modal="progressBar"></span>
             </div>
           </div>
         </div>
@@ -214,13 +226,31 @@ export default class UI {
     if (element.classList.contains('update')) {
       modalContainer.style.display = 'grid';
       body.style.overflowY = 'hidden';
-      books.forEach((book) => UI.bookModalRender(modalContainer, book));
+      books.forEach((book) => {
+        UI.bookModalRender(modalContainer, book);
+
+        const progressBar = document.querySelector(
+          '[data-modal="progressBar"]',
+        );
+        const percentageHolder = document.querySelector(
+          '[data-modal="percentage"]',
+        );
+        UI.updateProgressBar(
+          book.currPag,
+          book.pagesTotal,
+          progressBar,
+          percentageHolder,
+        );
+      });
     }
   }
 
-  static cancelUpdate(element) {
+  static closeModal(element) {
     const modalContainer = document.querySelector('[data-modal="container"]');
     const body = document.querySelector('body');
+    const form = document.querySelector('[data-modal="form"]');
+    const modalInput = document.querySelector('[date-modal="prevision"]');
+    const modal = modalContainer.querySelector('.modal');
 
     if (
       element.classList.contains('cancel') ||
@@ -228,6 +258,26 @@ export default class UI {
     ) {
       modalContainer.style.display = 'none';
       body.style.overflowY = 'scroll';
+      form.reset();
     }
+    if (modalInput.value === '' && element.classList.contains('confirm')) {
+      UI.showAlert('Insira a página atual.', 'error', modal, 'beforeend');
+    }
+    if (modalInput.value !== '' && element.classList.contains('confirm')) {
+      modalContainer.style.display = 'none';
+      body.style.overflowY = 'scroll';
+      form.reset();
+    }
+  }
+
+  static getPregressPerc(currPag, totalPages) {
+    return ((currPag / totalPages) * 100).toFixed();
+  }
+
+  static updateProgressBar(currPag, totalPages, progressBar, percentageHolder) {
+    const percentage = UI.getPregressPerc(currPag, totalPages);
+
+    progressBar.style.minWidth = `${percentage}%`;
+    percentageHolder.innerText = `${percentage}%`;
   }
 }

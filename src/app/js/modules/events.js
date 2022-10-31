@@ -1,4 +1,5 @@
 import { dateFormating, dateFormatingModal } from './dateFormating';
+import Store from './Store';
 import UI from './UI';
 
 export default function initEvents() {
@@ -49,7 +50,7 @@ export default function initEvents() {
   // cancelar atualização de leitura
   const modalContainer = document.querySelector('[data-modal="container"]');
   modalContainer.addEventListener('click', ({ target }) => {
-    UI.cancelUpdate(target);
+    UI.closeModal(target);
   });
 
   const inputTotalPagesValue = document.querySelector('#totalPages').value;
@@ -73,7 +74,42 @@ export default function initEvents() {
           target.value,
           totalPages.innerText,
         );
+        const progressBar = document.querySelector(
+          '[data-modal="progressBar"]',
+        );
+        const percentageHolder = document.querySelector(
+          '[data-modal="percentage"]',
+        );
+        UI.updateProgressBar(
+          target.value,
+          totalPages.innerText,
+          progressBar,
+          percentageHolder,
+        );
+
+        const books = Store.getBooks();
+        books.forEach((book) => {
+          book.currPag = target.value;
+          book.percentage = UI.getPregressPerc(
+            target.value,
+            totalPages.innerText,
+          );
+          Store.updateBook(book.id, book);
+        });
       });
     }
   }
+
+  modalContainer.addEventListener('click', ({ target }) => {
+    if (target.classList.contains('confirm')) {
+      const totalPages = document.querySelector('[data-modal="totalPages"]');
+      // const currPag = modalDatePrevision.value;
+      const progressBar = document.querySelector('[data-book="progressBar"]');
+      const percentageHolder = document.querySelector(
+        '[data-book="percentage"]',
+      );
+
+      UI.closeModal(target);
+    }
+  });
 }

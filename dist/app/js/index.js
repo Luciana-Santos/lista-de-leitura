@@ -76,6 +76,19 @@ var Store = /*#__PURE__*/function () {
       });
       localStorage.setItem('books', JSON.stringify(books));
     }
+  }, {
+    key: "updateBook",
+    value: function updateBook(id, book) {
+      var books = Store.getBooks();
+      books.forEach(function (bookEl, index) {
+        if (bookEl.id === id) {
+          books.splice(index, 1);
+          books.push(book);
+        }
+
+        localStorage.setItem('books', JSON.stringify(books));
+      });
+    }
   }]);
 
   return Store;
@@ -126,9 +139,12 @@ var UI = /*#__PURE__*/function () {
       var bookItem = document.createElement('article');
       bookItem.classList.add('book_list__item');
       var defaultCover = './assets/cover-undefined.png';
-      bookItem.innerHTML = "\n      <div class=\"book_list__item__img\">\n        <img src=\"".concat(book.cover || defaultCover, "\" alt=\"").concat(book.title, "\">\n      </div>\n      <div class=\"book_list__item__info\">\n        <h3>").concat(book.title, "</h3>\n        <p class=\"prevision\">Previs\xE3o de t\xE9rmino: <span>").concat(book.prevision, "</span></p>\n        <div class=\"progress\">\n          <p>306 p\xE1ginas de ").concat(book.pagesTotal, " <span>74%</span></p>\n          <div class=\"progress__bar\">\n            <span></span>\n          </div>\n        </div>\n\n        <div class=\"book_list__item__btn\" data-bookItem=\"btn\">\n          <button class=\"btn btn--red update\">Atualizar</button>\n          <i class=\"fa-solid fa-trash-can delete\"></i>\n        </div>\n      </div>\n    ");
+      bookItem.innerHTML = "\n      <div class=\"book_list__item__img\">\n        <img src=\"".concat(book.cover || defaultCover, "\" alt=\"").concat(book.title, "\">\n      </div>\n      <div class=\"book_list__item__info\">\n        <h3>").concat(book.title, "</h3>\n        <p class=\"prevision\">Previs\xE3o de t\xE9rmino: <span>").concat(book.prevision, "</span></p>\n        <div class=\"progress\">\n          <p>?? p\xE1ginas de ").concat(book.pagesTotal, " <span data-book=\"percentage\">").concat(book.percentage, "%</span></p>\n          <div class=\"progress__bar\">\n            <span data-book=\"progressBar\"></span>\n          </div>\n        </div>\n\n        <div class=\"book_list__item__btn\" data-bookItem=\"btn\">\n          <button class=\"btn btn--red update\">Atualizar</button>\n          <i class=\"fa-solid fa-trash-can delete\"></i>\n        </div>\n      </div>\n    ");
       bookItem.dataset.book = 'item';
       bookList.insertAdjacentElement('afterbegin', bookItem);
+      var progressBar = document.querySelector('[data-book="progressBar"]');
+      var percentageHolder = document.querySelector('[data-book="percentage"]');
+      UI.updateProgressBar(book.currPag, book.pagesTotal, progressBar, percentageHolder);
     }
   }, {
     key: "getInputsValue",
@@ -208,7 +224,6 @@ var UI = /*#__PURE__*/function () {
         var _UI$getInputsValue2 = UI.getInputsValue(),
             id = _UI$getInputsValue2.id;
 
-        console.log(id);
         _Store__WEBPACK_IMPORTED_MODULE_4__["default"].removeBook(id); // alerta de error
 
         var bookList = document.querySelector('[data-book="list"]');
@@ -230,7 +245,7 @@ var UI = /*#__PURE__*/function () {
     key: "bookModalRender",
     value: function bookModalRender(container, book) {
       var defaultCover = './assets/cover-undefined.png';
-      container.innerHTML = "\n      <div class=\"modal\">\n        <div class=\"modal__book_cover\">\n          <img src=\"".concat(book.cover || defaultCover, "\" alt=\"").concat(book.title, "\">\n        </div>\n\n        <div class=\"modal__book_info\">\n          <span>").concat(book.author || 'Autor não informado', "</span>\n          <p>").concat(book.title, "</p>\n        </div>\n\n        <form class=\"modal__form\" data-modal=\"form\">\n          <fieldset>\n            <label for=\"actPag\">P\xE1g. Atual:*</label>\n            <input type=\"number\" id=\"actPag\" name=\"actPag\" placeholder=\"89\" date-modal=\"prevision\">\n          </fieldset>\n          \n          <div>\n            <span>P\xE1g. Total:*</span>\n            <p data-modal=\"totalPages\">").concat(book.pagesTotal, "</p>\n          </div>\n        </form>\n\n        <div class=\"previsao\">\n          <p>Previs\xE3o de t\xE9rmino:</p>\n          <p class=\"data-prevista\" data-modal=\"date\">").concat(book.prevision, "</p>\n\n          <div class=\"progress\">\n            <p>74%</p>\n            <div class=\"progress__bar\">\n              <span></span>\n            </div>\n          </div>\n        </div>\n\n        <div class=\"form__btn\">\n          <button class=\"btn btn--cancel cancel\" data-modal=\"cancel\">Cancelar</button>\n          <button class=\"btn btn--red confirm\" data-modal=\"confirm\">OK</button>\n        </div>\n      </div>\n    ");
+      container.innerHTML = "\n      <div class=\"modal\">\n        <div class=\"modal__book_cover\">\n          <img src=\"".concat(book.cover || defaultCover, "\" alt=\"").concat(book.title, "\">\n        </div>\n\n        <div class=\"modal__book_info\">\n          <span>").concat(book.author || 'Autor não informado', "</span>\n          <p>").concat(book.title, "</p>\n        </div>\n\n        <form class=\"modal__form\" data-modal=\"form\">\n          <fieldset>\n            <label for=\"currPag\">P\xE1g. Atual:*</label>\n            <input type=\"number\" id=\"currPag\" name=\"currPag\" placeholder=\"").concat(book.currPag || 60, "\" date-modal=\"prevision\">\n          </fieldset>\n          \n          <div>\n            <span>P\xE1g. Total:*</span>\n            <p data-modal=\"totalPages\">").concat(book.pagesTotal, "</p>\n          </div>\n        </form>\n\n        <div class=\"previsao\">\n          <p>Previs\xE3o de t\xE9rmino:</p>\n          <p class=\"data-prevista\" data-modal=\"date\">").concat(book.prevision, "</p>\n\n          <div class=\"progress\">\n            <p data-modal=\"percentage\">0%</p>\n            <div class=\"progress__bar\">\n              <span data-modal=\"progressBar\"></span>\n            </div>\n          </div>\n        </div>\n\n        <div class=\"form__btn\">\n          <button class=\"btn btn--cancel cancel\" data-modal=\"cancel\">Cancelar</button>\n          <button class=\"btn btn--red confirm\" data-modal=\"confirm\">OK</button>\n        </div>\n      </div>\n    ");
     }
   }, {
     key: "bookUpdateModal",
@@ -243,20 +258,49 @@ var UI = /*#__PURE__*/function () {
         modalContainer.style.display = 'grid';
         body.style.overflowY = 'hidden';
         books.forEach(function (book) {
-          return UI.bookModalRender(modalContainer, book);
+          UI.bookModalRender(modalContainer, book);
+          var progressBar = document.querySelector('[data-modal="progressBar"]');
+          var percentageHolder = document.querySelector('[data-modal="percentage"]');
+          UI.updateProgressBar(book.currPag, book.pagesTotal, progressBar, percentageHolder);
         });
       }
     }
   }, {
-    key: "cancelUpdate",
-    value: function cancelUpdate(element) {
+    key: "closeModal",
+    value: function closeModal(element) {
       var modalContainer = document.querySelector('[data-modal="container"]');
       var body = document.querySelector('body');
+      var form = document.querySelector('[data-modal="form"]');
+      var modalInput = document.querySelector('[date-modal="prevision"]');
+      var modal = modalContainer.querySelector('.modal');
 
       if (element.classList.contains('cancel') || element.classList.contains('backdrop')) {
         modalContainer.style.display = 'none';
         body.style.overflowY = 'scroll';
+        form.reset();
       }
+
+      if (modalInput.value === '' && element.classList.contains('confirm')) {
+        UI.showAlert('Insira a página atual.', 'error', modal, 'beforeend');
+      }
+
+      if (modalInput.value !== '' && element.classList.contains('confirm')) {
+        modalContainer.style.display = 'none';
+        body.style.overflowY = 'scroll';
+        form.reset();
+      }
+    }
+  }, {
+    key: "getPregressPerc",
+    value: function getPregressPerc(currPag, totalPages) {
+      return (currPag / totalPages * 100).toFixed();
+    }
+  }, {
+    key: "updateProgressBar",
+    value: function updateProgressBar(currPag, totalPages, progressBar, percentageHolder) {
+      var percentage = UI.getPregressPerc(currPag, totalPages);
+      progressBar.style.minWidth = "".concat(percentage, "%");
+      percentageHolder.innerText = "".concat(percentage, "%");
     }
   }]);
 
@@ -279,7 +323,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "dateFormatingModal": () => (/* binding */ dateFormatingModal)
 /* harmony export */ });
 function daysToSeconds(days) {
-  return Math.round(days * 24 * 60 * 60);
+  return Math.floor(days * 24 * 60 * 60);
 }
 
 var dateNow = new Date();
@@ -294,16 +338,15 @@ function dateFormating(totalPages, pagesPerDay) {
   dateNow.setSeconds(dateNow.getSeconds() + secondsFromDays); // const datePreview = dateNow.toLocaleDateString('pt-BR');
 
   datePreview = dateNow.toLocaleDateString('pt-BR');
-  console.log(datePreview);
   return datePreview;
 }
 
-function dateFormatingModal(actPage, totalPages) {
-  previsionDays = totalPages / actPage;
+function dateFormatingModal(currPage, totalPages) {
+  previsionDays = totalPages / currPage;
   var secondsFromDays = daysToSeconds(previsionDays);
-  console.log(secondsFromDays);
   dateNow.setSeconds(dateNow.getSeconds() + secondsFromDays);
-  datePreview = dateNow.toLocaleDateString('pt-BR');
+  datePreview = dateNow.toLocaleDateString();
+  console.log(datePreview);
   return datePreview;
 }
 
@@ -322,7 +365,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* binding */ initEvents)
 /* harmony export */ });
 /* harmony import */ var _dateFormating__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./dateFormating */ "./src/app/js/modules/dateFormating.js");
-/* harmony import */ var _UI__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./UI */ "./src/app/js/modules/UI.js");
+/* harmony import */ var _Store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Store */ "./src/app/js/modules/Store.js");
+/* harmony import */ var _UI__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./UI */ "./src/app/js/modules/UI.js");
+
 
 
 function initEvents() {
@@ -361,24 +406,24 @@ function initEvents() {
   });
   clearFormBtn.addEventListener('click', function (e) {
     e.preventDefault();
-    _UI__WEBPACK_IMPORTED_MODULE_1__["default"].clearInputFields();
+    _UI__WEBPACK_IMPORTED_MODULE_2__["default"].clearInputFields();
   }); // remove livro renderizado
 
   bookList.addEventListener('click', function (_ref3) {
     var target = _ref3.target;
-    return _UI__WEBPACK_IMPORTED_MODULE_1__["default"].deleteBook(target);
+    return _UI__WEBPACK_IMPORTED_MODULE_2__["default"].deleteBook(target);
   }); // abrir modal de atualizar livro
 
   bookList.addEventListener('click', function (_ref4) {
     var target = _ref4.target;
-    _UI__WEBPACK_IMPORTED_MODULE_1__["default"].bookUpdateModal(target);
+    _UI__WEBPACK_IMPORTED_MODULE_2__["default"].bookUpdateModal(target);
     renderDatePreviewModal();
   }); // cancelar atualização de leitura
 
   var modalContainer = document.querySelector('[data-modal="container"]');
   modalContainer.addEventListener('click', function (_ref5) {
     var target = _ref5.target;
-    _UI__WEBPACK_IMPORTED_MODULE_1__["default"].cancelUpdate(target);
+    _UI__WEBPACK_IMPORTED_MODULE_2__["default"].closeModal(target);
   });
   var inputTotalPagesValue = document.querySelector('#totalPages').value;
   var inputPagesPerDayValue = document.querySelector('#pagesPerDay');
@@ -397,9 +442,30 @@ function initEvents() {
       modalDatePrevision.addEventListener('change', function (_ref7) {
         var target = _ref7.target;
         dateContainer.innerText = (0,_dateFormating__WEBPACK_IMPORTED_MODULE_0__.dateFormatingModal)(target.value, totalPages.innerText);
+        var progressBar = document.querySelector('[data-modal="progressBar"]');
+        var percentageHolder = document.querySelector('[data-modal="percentage"]');
+        _UI__WEBPACK_IMPORTED_MODULE_2__["default"].updateProgressBar(target.value, totalPages.innerText, progressBar, percentageHolder);
+        var books = _Store__WEBPACK_IMPORTED_MODULE_1__["default"].getBooks();
+        books.forEach(function (book) {
+          book.currPag = target.value;
+          book.percentage = _UI__WEBPACK_IMPORTED_MODULE_2__["default"].getPregressPerc(target.value, totalPages.innerText);
+          _Store__WEBPACK_IMPORTED_MODULE_1__["default"].updateBook(book.id, book);
+        });
       });
     }
   }
+
+  modalContainer.addEventListener('click', function (_ref8) {
+    var target = _ref8.target;
+
+    if (target.classList.contains('confirm')) {
+      var totalPages = document.querySelector('[data-modal="totalPages"]'); // const currPag = modalDatePrevision.value;
+
+      var progressBar = document.querySelector('[data-book="progressBar"]');
+      var percentageHolder = document.querySelector('[data-book="percentage"]');
+      _UI__WEBPACK_IMPORTED_MODULE_2__["default"].closeModal(target);
+    }
+  });
 }
 
 /***/ }),

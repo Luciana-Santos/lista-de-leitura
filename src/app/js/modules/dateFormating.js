@@ -1,5 +1,5 @@
 function daysToSeconds(days) {
-  return Math.round(days * 24 * 60 * 60);
+  return Math.floor(days * 24 * 60 * 60);
 }
 const dateNow = new Date();
 let previsionDays;
@@ -16,19 +16,18 @@ function dateFormating(totalPages, pagesPerDay) {
 
   // const datePreview = dateNow.toLocaleDateString('pt-BR');
   datePreview = dateNow.toLocaleDateString('pt-BR');
-
-  console.log(datePreview);
   return datePreview;
 }
 
-function dateFormatingModal(actPage, totalPages) {
-  previsionDays = totalPages / actPage;
+function dateFormatingModal(currPage, totalPages) {
+  previsionDays = totalPages / currPage;
 
   const secondsFromDays = daysToSeconds(previsionDays);
-  console.log(secondsFromDays);
+
   dateNow.setSeconds(dateNow.getSeconds() + secondsFromDays);
 
-  datePreview = dateNow.toLocaleDateString('pt-BR');
+  datePreview = dateNow.toLocaleDateString();
+  console.log(datePreview);
 
   return datePreview;
 }
