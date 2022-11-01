@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import Book from './Book';
 import { dateFormating } from './dateFormating';
 import Store from './Store';
@@ -20,18 +21,20 @@ export default class UI {
         <img src="${book.cover || defaultCover}" alt="${book.title}">
       </div>
       <div class="book_list__item__info">
-        <h3>${book.title}</h3>
+        <h3>${book.title} <span class="book_id" data-book="bookId">#${
+      book.id
+    }</span></h3>
         <p class="prevision">Previsão de término: <span>${
           book.prevision
         }</span></p>
         <div class="progress">
-          <p>?? páginas de ${book.pagesTotal} <span data-book="percentage">${
-      book.percentage
-    }%</span></p>
+          <p>${book.currPag} páginas de ${
+      book.pagesTotal
+    } <span data-book="percentage">${book.percentage}%</span></p>
           <div class="progress__bar">
             <span data-book="progressBar"></span>
           </div>
-        </div>
+        </div>  
 
         <div class="book_list__item__btn" data-bookItem="btn">
           <button class="btn btn--red update">Atualizar</button>
@@ -64,7 +67,7 @@ export default class UI {
       inputTotalPagesValue,
       inputPagesPerDayValue,
     );
-    const id = Date.now();
+    const id = Math.floor(Math.random() * 9000);
     console.log(datePrevision);
 
     return {
@@ -100,7 +103,7 @@ export default class UI {
     ) {
       // alerta de error
       UI.showAlert(
-        'Por favor, preecha os campos marcados com *.',
+        'Por favor, preencha os campos marcados com *.',
         'error',
         formContainer,
         'beforeend',
@@ -146,11 +149,14 @@ export default class UI {
 
   static deleteBook(element) {
     if (element.classList.contains('delete')) {
-      element.parentElement.parentElement.parentElement.remove();
-
       // remove livro do localStorage
-      const { id } = UI.getInputsValue();
+      const id = document
+        .querySelector('[data-book="bookId"]')
+        .innerText.substring(1);
       Store.removeBook(id);
+
+      // remover livro da UI
+      element.parentElement.parentElement.parentElement.remove();
 
       // alerta de error
       const bookList = document.querySelector('[data-book="list"]');
@@ -189,7 +195,7 @@ export default class UI {
             <label for="currPag">Pág. Atual:*</label>
             <input type="number" id="currPag" name="currPag" placeholder="${
               book.currPag || 60
-            }" date-modal="prevision">
+            }" data-modal="prevision">
           </fieldset>
           
           <div>
@@ -249,7 +255,7 @@ export default class UI {
     const modalContainer = document.querySelector('[data-modal="container"]');
     const body = document.querySelector('body');
     const form = document.querySelector('[data-modal="form"]');
-    const modalInput = document.querySelector('[date-modal="prevision"]');
+    const modalInput = document.querySelector('[data-modal="prevision"]');
     const modal = modalContainer.querySelector('.modal');
 
     if (

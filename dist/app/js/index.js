@@ -72,7 +72,7 @@ var Store = /*#__PURE__*/function () {
     value: function removeBook(id) {
       var books = Store.getBooks();
       books.forEach(function (book, index) {
-        if (book.id === id) books.splice(index, 1);
+        if (+book.id === +id) books.splice(index, 1);
       });
       localStorage.setItem('books', JSON.stringify(books));
     }
@@ -116,6 +116,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+/* eslint-disable indent */
+
 
 
 
@@ -139,7 +141,7 @@ var UI = /*#__PURE__*/function () {
       var bookItem = document.createElement('article');
       bookItem.classList.add('book_list__item');
       var defaultCover = './assets/cover-undefined.png';
-      bookItem.innerHTML = "\n      <div class=\"book_list__item__img\">\n        <img src=\"".concat(book.cover || defaultCover, "\" alt=\"").concat(book.title, "\">\n      </div>\n      <div class=\"book_list__item__info\">\n        <h3>").concat(book.title, "</h3>\n        <p class=\"prevision\">Previs\xE3o de t\xE9rmino: <span>").concat(book.prevision, "</span></p>\n        <div class=\"progress\">\n          <p>?? p\xE1ginas de ").concat(book.pagesTotal, " <span data-book=\"percentage\">").concat(book.percentage, "%</span></p>\n          <div class=\"progress__bar\">\n            <span data-book=\"progressBar\"></span>\n          </div>\n        </div>\n\n        <div class=\"book_list__item__btn\" data-bookItem=\"btn\">\n          <button class=\"btn btn--red update\">Atualizar</button>\n          <i class=\"fa-solid fa-trash-can delete\"></i>\n        </div>\n      </div>\n    ");
+      bookItem.innerHTML = "\n      <div class=\"book_list__item__img\">\n        <img src=\"".concat(book.cover || defaultCover, "\" alt=\"").concat(book.title, "\">\n      </div>\n      <div class=\"book_list__item__info\">\n        <h3>").concat(book.title, " <span class=\"book_id\" data-book=\"bookId\">#").concat(book.id, "</span></h3>\n        <p class=\"prevision\">Previs\xE3o de t\xE9rmino: <span>").concat(book.prevision, "</span></p>\n        <div class=\"progress\">\n          <p>").concat(book.currPag, " p\xE1ginas de ").concat(book.pagesTotal, " <span data-book=\"percentage\">").concat(book.percentage, "%</span></p>\n          <div class=\"progress__bar\">\n            <span data-book=\"progressBar\"></span>\n          </div>\n        </div>  \n\n        <div class=\"book_list__item__btn\" data-bookItem=\"btn\">\n          <button class=\"btn btn--red update\">Atualizar</button>\n          <i class=\"fa-solid fa-trash-can delete\"></i>\n        </div>\n      </div>\n    ");
       bookItem.dataset.book = 'item';
       bookList.insertAdjacentElement('afterbegin', bookItem);
       var progressBar = document.querySelector('[data-book="progressBar"]');
@@ -158,7 +160,7 @@ var UI = /*#__PURE__*/function () {
       var inputPagesPerDayValue = document.querySelector('#pagesPerDay').value;
       var imgBlob = inputCover === null || inputCover === void 0 ? void 0 : (_inputCover$nextEleme = inputCover.nextElementSibling) === null || _inputCover$nextEleme === void 0 ? void 0 : _inputCover$nextEleme.attributes.src.nodeValue;
       var datePrevision = (0,_dateFormating__WEBPACK_IMPORTED_MODULE_3__.dateFormating)(inputTotalPagesValue, inputPagesPerDayValue);
-      var id = Date.now();
+      var id = Math.floor(Math.random() * 9000);
       console.log(datePrevision);
       return {
         id: id,
@@ -188,7 +190,7 @@ var UI = /*#__PURE__*/function () {
 
       if (inputTitleValue === '' || inputTotalPagesValue === '' || inputPagesPerDayValue === '') {
         // alerta de error
-        UI.showAlert('Por favor, preecha os campos marcados com *.', 'error', formContainer, 'beforeend');
+        UI.showAlert('Por favor, preencha os campos marcados com *.', 'error', formContainer, 'beforeend');
       } else {
         var book = new _Book__WEBPACK_IMPORTED_MODULE_2__["default"](id, imgBlob, inputTitleValue, inputAuthorValue, inputTotalPagesValue, inputPagesPerDayValue, datePrevision); // renderiza livro
 
@@ -219,12 +221,11 @@ var UI = /*#__PURE__*/function () {
     key: "deleteBook",
     value: function deleteBook(element) {
       if (element.classList.contains('delete')) {
-        element.parentElement.parentElement.parentElement.remove(); // remove livro do localStorage
+        // remove livro do localStorage
+        var id = document.querySelector('[data-book="bookId"]').innerText.substring(1);
+        _Store__WEBPACK_IMPORTED_MODULE_4__["default"].removeBook(id); // remover livro da UI
 
-        var _UI$getInputsValue2 = UI.getInputsValue(),
-            id = _UI$getInputsValue2.id;
-
-        _Store__WEBPACK_IMPORTED_MODULE_4__["default"].removeBook(id); // alerta de error
+        element.parentElement.parentElement.parentElement.remove(); // alerta de error
 
         var bookList = document.querySelector('[data-book="list"]');
         UI.showAlert('Livro removido!', 'success', bookList, 'afterbegin');
@@ -245,7 +246,7 @@ var UI = /*#__PURE__*/function () {
     key: "bookModalRender",
     value: function bookModalRender(container, book) {
       var defaultCover = './assets/cover-undefined.png';
-      container.innerHTML = "\n      <div class=\"modal\">\n        <div class=\"modal__book_cover\">\n          <img src=\"".concat(book.cover || defaultCover, "\" alt=\"").concat(book.title, "\">\n        </div>\n\n        <div class=\"modal__book_info\">\n          <span>").concat(book.author || 'Autor não informado', "</span>\n          <p>").concat(book.title, "</p>\n        </div>\n\n        <form class=\"modal__form\" data-modal=\"form\">\n          <fieldset>\n            <label for=\"currPag\">P\xE1g. Atual:*</label>\n            <input type=\"number\" id=\"currPag\" name=\"currPag\" placeholder=\"").concat(book.currPag || 60, "\" date-modal=\"prevision\">\n          </fieldset>\n          \n          <div>\n            <span>P\xE1g. Total:*</span>\n            <p data-modal=\"totalPages\">").concat(book.pagesTotal, "</p>\n          </div>\n        </form>\n\n        <div class=\"previsao\">\n          <p>Previs\xE3o de t\xE9rmino:</p>\n          <p class=\"data-prevista\" data-modal=\"date\">").concat(book.prevision, "</p>\n\n          <div class=\"progress\">\n            <p data-modal=\"percentage\">0%</p>\n            <div class=\"progress__bar\">\n              <span data-modal=\"progressBar\"></span>\n            </div>\n          </div>\n        </div>\n\n        <div class=\"form__btn\">\n          <button class=\"btn btn--cancel cancel\" data-modal=\"cancel\">Cancelar</button>\n          <button class=\"btn btn--red confirm\" data-modal=\"confirm\">OK</button>\n        </div>\n      </div>\n    ");
+      container.innerHTML = "\n      <div class=\"modal\">\n        <div class=\"modal__book_cover\">\n          <img src=\"".concat(book.cover || defaultCover, "\" alt=\"").concat(book.title, "\">\n        </div>\n\n        <div class=\"modal__book_info\">\n          <span>").concat(book.author || 'Autor não informado', "</span>\n          <p>").concat(book.title, "</p>\n        </div>\n\n        <form class=\"modal__form\" data-modal=\"form\">\n          <fieldset>\n            <label for=\"currPag\">P\xE1g. Atual:*</label>\n            <input type=\"number\" id=\"currPag\" name=\"currPag\" placeholder=\"").concat(book.currPag || 60, "\" data-modal=\"prevision\">\n          </fieldset>\n          \n          <div>\n            <span>P\xE1g. Total:*</span>\n            <p data-modal=\"totalPages\">").concat(book.pagesTotal, "</p>\n          </div>\n        </form>\n\n        <div class=\"previsao\">\n          <p>Previs\xE3o de t\xE9rmino:</p>\n          <p class=\"data-prevista\" data-modal=\"date\">").concat(book.prevision, "</p>\n\n          <div class=\"progress\">\n            <p data-modal=\"percentage\">0%</p>\n            <div class=\"progress__bar\">\n              <span data-modal=\"progressBar\"></span>\n            </div>\n          </div>\n        </div>\n\n        <div class=\"form__btn\">\n          <button class=\"btn btn--cancel cancel\" data-modal=\"cancel\">Cancelar</button>\n          <button class=\"btn btn--red confirm\" data-modal=\"confirm\">OK</button>\n        </div>\n      </div>\n    ");
     }
   }, {
     key: "bookUpdateModal",
@@ -271,7 +272,7 @@ var UI = /*#__PURE__*/function () {
       var modalContainer = document.querySelector('[data-modal="container"]');
       var body = document.querySelector('body');
       var form = document.querySelector('[data-modal="form"]');
-      var modalInput = document.querySelector('[date-modal="prevision"]');
+      var modalInput = document.querySelector('[data-modal="prevision"]');
       var modal = modalContainer.querySelector('.modal');
 
       if (element.classList.contains('cancel') || element.classList.contains('backdrop')) {
@@ -434,7 +435,7 @@ function initEvents() {
   });
 
   function renderDatePreviewModal() {
-    var modalDatePrevision = document.querySelector('[date-modal="prevision"]');
+    var modalDatePrevision = document.querySelector('[data-modal="prevision"]');
     var dateContainer = document.querySelector('[data-modal="date"]');
     var totalPages = document.querySelector('[data-modal="totalPages"]');
 
@@ -449,8 +450,12 @@ function initEvents() {
         books.forEach(function (book) {
           book.currPag = target.value;
           book.percentage = _UI__WEBPACK_IMPORTED_MODULE_2__["default"].getPregressPerc(target.value, totalPages.innerText);
+          book.prevision = dateContainer.innerText;
           _Store__WEBPACK_IMPORTED_MODULE_1__["default"].updateBook(book.id, book);
         });
+        var bookProgressBar = document.querySelector('[data-book="progressBar"]');
+        var bookPercentageHolder = document.querySelector('[data-book="percentage"]');
+        _UI__WEBPACK_IMPORTED_MODULE_2__["default"].updateProgressBar(target.value, totalPages, bookProgressBar, bookPercentageHolder);
       });
     }
   }
@@ -459,10 +464,7 @@ function initEvents() {
     var target = _ref8.target;
 
     if (target.classList.contains('confirm')) {
-      var totalPages = document.querySelector('[data-modal="totalPages"]'); // const currPag = modalDatePrevision.value;
-
-      var progressBar = document.querySelector('[data-book="progressBar"]');
-      var percentageHolder = document.querySelector('[data-book="percentage"]');
+      var totalPages = document.querySelector('[data-modal="totalPages"]');
       _UI__WEBPACK_IMPORTED_MODULE_2__["default"].closeModal(target);
     }
   });
