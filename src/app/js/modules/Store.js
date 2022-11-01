@@ -17,7 +17,7 @@ export default class Store {
     const books = Store.getBooks();
 
     books.forEach((book, index) => {
-      if (book.id === id) books.splice(index, 1);
+      if (+book.id === +id) books.splice(index, 1);
     });
 
     localStorage.setItem('books', JSON.stringify(books));
