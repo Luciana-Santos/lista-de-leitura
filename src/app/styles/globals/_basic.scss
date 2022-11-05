@@ -77,6 +77,7 @@ input {
 }
 
 .btn {
+  border-radius: rem(4);
   background: transparent;
   border: none;
   font-size: rem(16);
@@ -92,7 +93,6 @@ input {
 .btn--red {
   padding-inline: rem(20);
   background: var(--cl-accent);
-  border-radius: rem(4);
   transition: 0.3s ease;
   color: var(--cl-white);
 
@@ -108,6 +108,8 @@ input {
   padding-block: rem(4);
   padding-inline: rem(10);
   margin-top: rem(20);
+  width: max-content;
+  margin-inline: auto;
 }
 
 .alert-error {
@@ -118,28 +120,33 @@ input {
   background: var(--cl-success);
 }
 
+// progress bar
 .progress {
   p {
     font-size: rem(10);
     display: flex;
     justify-content: space-between;
-    margin-bottom: rem(6);
   }
 
   &__bar {
-    height: 7px;
-    overflow: hidden;
-    background: var(--cl-dk-violet);
-    border-radius: rem(10);
-    position: relative;
-
-    span {
-      position: absolute;
-      top: 0;
-      left: 0;
-      min-width: 1%;
-      height: 100%;
+    progress {
+      border-radius: rem(10);
+      background: var(--cl-dk-violet);
+      width: 100%;
+      height: rem(8);
+      border: none;
+    }
+    progress::-webkit-progress-bar {
       background: var(--cl-md-blue);
+      border-radius: rem(10);
+    }
+    progress::-webkit-progress-value {
+      background: var(--cl-md-blue);
+      border-radius: rem(10);
+    }
+    progress::-moz-progress-bar {
+      background-color: var(--cl-md-blue);
+      border-radius: rem(10);
     }
   }
 }
