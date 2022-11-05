@@ -39,9 +39,9 @@
             <input type="text" name="author" id="author" placeholder="JRR Tolkien">
           </fieldset>
 
-          <fieldset class="add_book__form__info--bottom-row">
-            <label>Total de páginas:* <input required type="number" name="total pages" id="totalPages" placeholder="576"></label>
-            <label class="book_info__tooltip_container">Meta diaria:* <i class="fa-solid fa-circle-info"> <span class="book_info__tooltip">Quantidade de páginas a serem lidas por dia.</span></i> <input required type="number" name="pages per day" id="pagesPerDay" placeholder="60"></label>
+          <fieldset data-form="inputs" class="add_book__form__info--bottom-row">
+            <label>Total de páginas:* <input required type="number" name="total pages" class="form_input" id="totalPages" placeholder="576"></label>
+            <label class="book_info__tooltip_container">Meta diaria:* <i class="fa-solid fa-circle-info"> <span class="book_info__tooltip">Quantidade de páginas a serem lidas por dia.</span></i> <input required type="number" name="pages per day" class="form_input" id="pagesPerDay" placeholder="60"></label>
           </fieldset>
         </div>
 
@@ -51,8 +51,8 @@
         </div>
 
         <div class="form__btn">
-          <button class="btn btn--cancel" data-form="removeBtn">Descartar</button>
-          <button class="btn btn--red" data-form="btn">Adicionar</button>
+          <span class="btn btn--cancel" data-form="removeBtn">Descartar</span>
+          <button type="submit" class="btn btn--red" data-form="btn">Adicionar</button>
         </div>
       </form>
     </section>
