@@ -21,7 +21,7 @@
     justify-items: center;
     background-color: var(--cl-vk-violet);
     padding-block: rem(44);
-    padding-inline: rem(20);
+    padding-inline: clamp(rem(20), 5vw, rem(44));
     border-radius: rem(6);
 
     &__book_cover {
@@ -94,10 +94,6 @@
       p {
         justify-self: end;
       }
-    }
-
-    @include breakpoint(x-small) {
-      padding-inline: rem(44);
     }
   }
 }

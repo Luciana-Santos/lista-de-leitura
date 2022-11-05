@@ -8,7 +8,7 @@
   gap: rem(20);
 
   @include breakpoint(x-large) {
-    justify-content: start;
+    justify-content: flex-start;
   }
 
   &__item {
@@ -32,13 +32,9 @@
     &__info {
       display: grid;
       gap: rem(20);
-      width: 100%;
+      width: clamp(60%, 5vw, 100%);
       flex: 1;
       min-width: 240px;
-
-      @include breakpoint(small) {
-        width: 60%;
-      }
 
       h3 {
         color: var(--cl-white);

@@ -4,11 +4,7 @@
   background-color: var(--cl-md-violet);
   padding-block: rem(60);
   border-radius: rem(4);
-  padding-inline: rem(30);
-
-  @include breakpoint(medium) {
-    padding-inline: rem(60);
-  }
+  padding-inline: clamp(rem(30), 5vw, rem(60));
 
   &__form {
     display: grid;
@@ -42,27 +38,24 @@
     &__info {
       label {
         display: block;
-        margin-bottom: rem(6);
       }
 
       &--bottom-row {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: rem(30);
+        column-gap: rem(30);
 
         label i {
           color: var(--cl-body);
           font-size: rem(13);
         }
-      }
 
-      &::after {
-        content: '';
-        display: block;
-        width: 100%;
-        height: 1px;
-        background-color: var(--cl-dk-violet);
-        margin-top: rem(30);
+        .btn {
+          background: var(--cl-md-blue);
+          width: max-content;
+          padding-inline: rem(10);
+          color: var(--cl-vk-violet);
+        }
       }
     }
   }
