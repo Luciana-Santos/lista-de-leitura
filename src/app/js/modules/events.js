@@ -1,4 +1,4 @@
-import { dateFormating, dateFormatingModal } from './dateFormating';
+import dateFormating from './dateFormating';
 import Store from './Store';
 import UI from './UI';
 
@@ -53,12 +53,18 @@ export default function initEvents() {
     UI.closeModal(target);
   });
 
-  const inputTotalPagesValue = document.querySelector('#totalPages').value;
   const inputPagesPerDayValue = document.querySelector('#pagesPerDay');
-  const datePrevision = document.querySelector('[data-from="prevision"]');
 
   inputPagesPerDayValue.addEventListener('change', ({ target }) => {
-    datePrevision.innerText = dateFormating(inputTotalPagesValue, target.value);
+    const datePrevision = document.querySelector('[data-from="prevision"]');
+    const inputTotalPagesValue = document.querySelector('#totalPages').value;
+
+    if (target.value && inputTotalPagesValue) {
+      datePrevision.innerHTML = dateFormating(
+        inputTotalPagesValue,
+        target.value,
+      );
+    }
   });
 
   function renderDatePreviewModal() {
@@ -70,22 +76,22 @@ export default function initEvents() {
 
     if (modalDatePrevision && dateContainer && totalPages) {
       modalDatePrevision.addEventListener('change', ({ target }) => {
-        dateContainer.innerText = dateFormatingModal(
-          target.value,
+        dateContainer.innerText = dateFormating(
           totalPages.innerText,
-        );
-        const progressBar = document.querySelector(
-          '[data-modal="progressBar"]',
-        );
-        const percentageHolder = document.querySelector(
-          '[data-modal="percentage"]',
-        );
-        UI.updateProgressBar(
           target.value,
-          totalPages.innerText,
-          progressBar,
-          percentageHolder,
         );
+        // const progressBar = document.querySelector(
+        //   '[data-modal="progressBar"]',
+        // );
+        // const percentageHolder = document.querySelector(
+        //   '[data-modal="percentage"]',
+        // );
+        // UI.updateProgressBar(
+        //   target.value,
+        //   totalPages.innerText,
+        //   progressBar,
+        //   percentageHolder,
+        // );
 
         const books = Store.getBooks();
         books.forEach((book) => {
@@ -98,26 +104,24 @@ export default function initEvents() {
           Store.updateBook(book.id, book);
         });
 
-        const bookProgressBar = document.querySelector(
-          '[data-book="progressBar"]',
-        );
-        const bookPercentageHolder = document.querySelector(
-          '[data-book="percentage"]',
-        );
-        UI.updateProgressBar(
-          target.value,
-          totalPages,
-          bookProgressBar,
-          bookPercentageHolder,
-        );
+        // const bookProgressBar = document.querySelector(
+        //   '[data-book="progressBar"]',
+        // );
+        // const bookPercentageHolder = document.querySelector(
+        //   '[data-book="percentage"]',
+        // );
+        // UI.updateProgressBar(
+        //   target.value,
+        //   totalPages,
+        //   bookProgressBar,
+        //   bookPercentageHolder,
+        // );
       });
     }
   }
 
   modalContainer.addEventListener('click', ({ target }) => {
     if (target.classList.contains('confirm')) {
-      const totalPages = document.querySelector('[data-modal="totalPages"]');
-
       UI.closeModal(target);
     }
   });

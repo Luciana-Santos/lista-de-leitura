@@ -1,6 +1,6 @@
 /* eslint-disable indent */
 import Book from './Book';
-import { dateFormating } from './dateFormating';
+import dateFormating from './dateFormating';
 import Store from './Store';
 
 export default class UI {
@@ -28,11 +28,11 @@ export default class UI {
           book.prevision
         }</span></p>
         <div class="progress">
-          <p>${book.currPag} páginas de ${
+          <p>${book.currPag || 0} páginas de ${
       book.pagesTotal
-    } <span data-book="percentage">${book.percentage}%</span></p>
+    } <span data-book="percentage">${book.percentage || '0'}%</span></p>
           <div class="progress__bar">
-            <span data-book="progressBar"></span>
+            <progress max="100" value="${book.percentage || 0}"></progress>
           </div>
         </div>  
 
@@ -46,14 +46,14 @@ export default class UI {
 
     bookList.insertAdjacentElement('afterbegin', bookItem);
 
-    const progressBar = document.querySelector('[data-book="progressBar"]');
-    const percentageHolder = document.querySelector('[data-book="percentage"]');
-    UI.updateProgressBar(
-      book.currPag,
-      book.pagesTotal,
-      progressBar,
-      percentageHolder,
-    );
+    // const progressBar = document.querySelector('[data-book="progressBar"]');
+    // const percentageHolder = document.querySelector('[data-book="percentage"]');
+    // UI.updateProgressBar(
+    //   book.currPag,
+    //   book.pagesTotal,
+    //   progressBar,
+    //   percentageHolder,
+    // );
   }
 
   static getInputsValue() {
@@ -68,7 +68,6 @@ export default class UI {
       inputPagesPerDayValue,
     );
     const id = Math.floor(Math.random() * 9000);
-    console.log(datePrevision);
 
     return {
       id,
@@ -134,7 +133,10 @@ export default class UI {
   }
 
   static clearInputFields() {
-    const form = document.querySelector('[data-form="form"]');
+    document.querySelector('#title').value = '';
+    document.querySelector('#author').value = '';
+    document.querySelector('#totalPages').value = '';
+    document.querySelector('#pagesPerDay').value = '';
     const inputCover = document.querySelector('#cover');
     const iconImg = document.querySelector('.fa-image');
     const imgPreview = document.querySelector('[data-image="preview"]');
@@ -144,7 +146,6 @@ export default class UI {
     datePrevision.innerText = '00/00/0000';
     iconImg.style.display = 'block';
     inputCover.removeAttribute('disabled');
-    form.reset();
   }
 
   static deleteBook(element) {
@@ -159,8 +160,8 @@ export default class UI {
       element.parentElement.parentElement.parentElement.remove();
 
       // alerta de error
-      const bookList = document.querySelector('[data-book="list"]');
-      UI.showAlert('Livro removido!', 'success', bookList, 'afterbegin');
+      const formContainer = document.querySelector('[data-form="container"]');
+      UI.showAlert('Livro removido!', 'success', formContainer, 'afterend');
     }
   }
 
@@ -194,7 +195,7 @@ export default class UI {
           <fieldset>
             <label for="currPag">Pág. Atual:*</label>
             <input type="number" id="currPag" name="currPag" placeholder="${
-              book.currPag || 60
+              book.currPag || book.pagesPerDay
             }" data-modal="prevision">
           </fieldset>
           
@@ -209,9 +210,9 @@ export default class UI {
           <p class="data-prevista" data-modal="date">${book.prevision}</p>
 
           <div class="progress">
-            <p data-modal="percentage">0%</p>
+            <p data-modal="percentage">${book.percentage || '0'}%</p>
             <div class="progress__bar">
-              <span data-modal="progressBar"></span>
+              <progress max="100" value="${book.percentage || 0}"></progress>
             </div>
           </div>
         </div>
@@ -235,18 +236,18 @@ export default class UI {
       books.forEach((book) => {
         UI.bookModalRender(modalContainer, book);
 
-        const progressBar = document.querySelector(
-          '[data-modal="progressBar"]',
-        );
-        const percentageHolder = document.querySelector(
-          '[data-modal="percentage"]',
-        );
-        UI.updateProgressBar(
-          book.currPag,
-          book.pagesTotal,
-          progressBar,
-          percentageHolder,
-        );
+        // const progressBar = document.querySelector(
+        //   '[data-modal="progressBar"]',
+        // );
+        // const percentageHolder = document.querySelector(
+        //   '[data-modal="percentage"]',
+        // );
+        // UI.updateProgressBar(
+        //   book.currPag,
+        //   book.pagesTotal,
+        //   progressBar,
+        //   percentageHolder,
+        // );
       });
     }
   }
