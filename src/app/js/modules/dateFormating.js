@@ -4,9 +4,7 @@ function daysToSeconds(days) {
 
 export default function dateFormating(totalPages, pagesPerDay) {
   const dateNow = new Date();
-
   const previsionDays = totalPages / pagesPerDay;
-
   const secondsFromDays = daysToSeconds(previsionDays);
 
   dateNow.setSeconds(dateNow.getSeconds() + secondsFromDays);

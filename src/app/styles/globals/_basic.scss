@@ -126,27 +126,23 @@ input {
     font-size: rem(10);
     display: flex;
     justify-content: space-between;
+    margin-bottom: rem(6);
   }
-
   &__bar {
-    progress {
-      border-radius: rem(10);
-      background: var(--cl-dk-violet);
-      width: 100%;
-      height: rem(8);
-      border: none;
-    }
-    progress::-webkit-progress-bar {
+    height: 7px;
+    overflow: hidden;
+    background: var(--cl-dk-violet);
+    border-radius: rem(10);
+    position: relative;
+
+    span {
+      display: inline-block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1%;
+      height: 100%;
       background: var(--cl-md-blue);
-      border-radius: rem(10);
-    }
-    progress::-webkit-progress-value {
-      background: var(--cl-md-blue);
-      border-radius: rem(10);
-    }
-    progress::-moz-progress-bar {
-      background-color: var(--cl-md-blue);
-      border-radius: rem(10);
     }
   }
 }

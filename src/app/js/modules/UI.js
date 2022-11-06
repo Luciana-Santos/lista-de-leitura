@@ -24,7 +24,7 @@ export default class UI {
         <h3>${book.title} <span class="book_id" data-book="bookId">#${
       book.id
     }</span></h3>
-        <p class="prevision">Previsão de término: <span>${
+        <p class="prevision" data=book="previsionDate">Previsão de término: <span>${
           book.prevision
         }</span></p>
         <div class="progress">
@@ -32,7 +32,7 @@ export default class UI {
       book.pagesTotal
     } <span data-book="percentage">${book.percentage || '0'}%</span></p>
           <div class="progress__bar">
-            <progress max="100" value="${book.percentage || 0}"></progress>
+            <span data-book="progressBar"></span>
           </div>
         </div>  
 
@@ -46,14 +46,9 @@ export default class UI {
 
     bookList.insertAdjacentElement('afterbegin', bookItem);
 
-    // const progressBar = document.querySelector('[data-book="progressBar"]');
-    // const percentageHolder = document.querySelector('[data-book="percentage"]');
-    // UI.updateProgressBar(
-    //   book.currPag,
-    //   book.pagesTotal,
-    //   progressBar,
-    //   percentageHolder,
-    // );
+    const progressBar = document.querySelector('[data-book="progressBar"]');
+    const percentageHolder = document.querySelector('[data-book="percentage"]');
+    UI.updateProgressBar(book.percentage || 0, progressBar, percentageHolder);
   }
 
   static getInputsValue() {
@@ -212,8 +207,10 @@ export default class UI {
           <div class="progress">
             <p data-modal="percentage">${book.percentage || '0'}%</p>
             <div class="progress__bar">
-              <progress max="100" value="${book.percentage || 0}"></progress>
-            </div>
+            <span data-modal="progressBar" style="width:${
+              book.percentage
+            }%"></span>
+          </div>
           </div>
         </div>
 
@@ -235,19 +232,6 @@ export default class UI {
       body.style.overflowY = 'hidden';
       books.forEach((book) => {
         UI.bookModalRender(modalContainer, book);
-
-        // const progressBar = document.querySelector(
-        //   '[data-modal="progressBar"]',
-        // );
-        // const percentageHolder = document.querySelector(
-        //   '[data-modal="percentage"]',
-        // );
-        // UI.updateProgressBar(
-        //   book.currPag,
-        //   book.pagesTotal,
-        //   progressBar,
-        //   percentageHolder,
-        // );
       });
     }
   }
@@ -281,10 +265,16 @@ export default class UI {
     return ((currPag / totalPages) * 100).toFixed();
   }
 
-  static updateProgressBar(currPag, totalPages, progressBar, percentageHolder) {
-    const percentage = UI.getPregressPerc(currPag, totalPages);
+  static updateProgressBar(percentage) {
+    const progressBar = document.querySelector('[data-book="progressBar"]');
+    const percentageHolder = document.querySelector('[data-book="percentage"]');
 
-    progressBar.style.minWidth = `${percentage}%`;
-    percentageHolder.innerText = `${percentage}%`;
+    percentageHolder.innerText = `${percentage}%` || '0';
+    progressBar.style.width = `${percentage}%`;
+  }
+
+  static updateProgressBarModal(percentage, progressBar, percentageHolder) {
+    percentageHolder.innerText = `${percentage}%` || '0';
+    progressBar.style.width = `${percentage}%`;
   }
 }
