@@ -104,6 +104,9 @@ export default function initEvents() {
   }
 
   modalContainer.addEventListener('click', ({ target }) => {
+    const dateBookPrevisionHolder = document.querySelector(
+      '[data-book="previsionDate"] span',
+    );
     if (target.classList.contains('confirm')) {
       UI.closeModal(target);
 
@@ -114,6 +117,7 @@ export default function initEvents() {
         book.prevision = dateContainer.innerText;
         Store.updateBook(book.id, book);
         UI.updateProgressBar(book.percentage, book.currPag, book.pagesTotal);
+        UI.updateDate(book.prevision, dateBookPrevisionHolder);
       });
     }
   });

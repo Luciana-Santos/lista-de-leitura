@@ -141,7 +141,7 @@ var UI = /*#__PURE__*/function () {
       var bookItem = document.createElement('article');
       bookItem.classList.add('book_list__item');
       var defaultCover = './assets/cover-undefined.png';
-      bookItem.innerHTML = "\n      <div class=\"book_list__item__img\">\n        <img src=\"".concat(book.cover || defaultCover, "\" alt=\"").concat(book.title, "\">\n      </div>\n      <div class=\"book_list__item__info\">\n        <h3>").concat(book.title, " <span class=\"book_id\" data-book=\"bookId\">#").concat(book.id, "</span></h3>\n        <p class=\"prevision\" data=book=\"previsionDate\">Previs\xE3o de t\xE9rmino: <span>").concat(book.prevision, "</span></p>\n        <div class=\"progress\">\n          <p>").concat(book.currPag || 0, " p\xE1ginas de ").concat(book.pagesTotal, " <span data-book=\"percentage\">").concat(book.percentage || '0', "%</span></p>\n          <div class=\"progress__bar\">\n            <span data-book=\"progressBar\"></span>\n          </div>\n        </div>  \n\n        <div class=\"book_list__item__btn\" data-bookItem=\"btn\">\n          <button class=\"btn btn--red update\">Atualizar</button>\n          <i class=\"fa-solid fa-trash-can delete\"></i>\n        </div>\n      </div>\n    ");
+      bookItem.innerHTML = "\n      <div class=\"book_list__item__img\">\n        <img src=\"".concat(book.cover || defaultCover, "\" alt=\"").concat(book.title, "\">\n      </div>\n      <div class=\"book_list__item__info\">\n        <h3>").concat(book.title, " <span class=\"book_id\" data-book=\"bookId\">#").concat(book.id, "</span></h3>\n        <p class=\"prevision\" data-book=\"previsionDate\">Previs\xE3o de t\xE9rmino: <span>").concat(book.prevision, "</span></p>\n        <div class=\"progress\">\n          <p>").concat(book.currPag || 0, " p\xE1ginas de ").concat(book.pagesTotal, " <span data-book=\"percentage\">").concat(book.percentage || '0', "%</span></p>\n          <div class=\"progress__bar\">\n            <span data-book=\"progressBar\"></span>\n          </div>\n        </div>  \n\n        <div class=\"book_list__item__btn\" data-bookItem=\"btn\">\n          <button class=\"btn btn--red update\">Atualizar</button>\n          <i class=\"fa-solid fa-trash-can delete\"></i>\n        </div>\n      </div>\n    ");
       bookItem.dataset.book = 'item';
       bookList.insertAdjacentElement('afterbegin', bookItem);
       var progressBar = document.querySelector('[data-book="progressBar"]');
@@ -174,6 +174,7 @@ var UI = /*#__PURE__*/function () {
   }, {
     key: "addBookData",
     value: function addBookData(e) {
+      e.preventDefault();
       var formContainer = document.querySelector('[data-form="container"]');
       e.preventDefault();
 
@@ -307,6 +308,11 @@ var UI = /*#__PURE__*/function () {
     value: function updateProgressBarModal(percentage, progressBar, percentageHolder) {
       percentageHolder.innerText = "".concat(percentage, "%") || 0;
       progressBar.style.width = "".concat(percentage, "%");
+    }
+  }, {
+    key: "updateDate",
+    value: function updateDate(date, holder) {
+      holder.innerText = date;
     }
   }]);
 
@@ -447,6 +453,7 @@ function initEvents() {
 
   modalContainer.addEventListener('click', function (_ref8) {
     var target = _ref8.target;
+    var dateBookPrevisionHolder = document.querySelector('[data-book="previsionDate"] span');
 
     if (target.classList.contains('confirm')) {
       _UI__WEBPACK_IMPORTED_MODULE_2__["default"].closeModal(target);
@@ -457,6 +464,7 @@ function initEvents() {
         book.prevision = dateContainer.innerText;
         _Store__WEBPACK_IMPORTED_MODULE_1__["default"].updateBook(book.id, book);
         _UI__WEBPACK_IMPORTED_MODULE_2__["default"].updateProgressBar(book.percentage, book.currPag, book.pagesTotal);
+        _UI__WEBPACK_IMPORTED_MODULE_2__["default"].updateDate(book.prevision, dateBookPrevisionHolder);
       });
     }
   });
@@ -584,8 +592,7 @@ var btnAddBook = document.querySelector('[data-form="btn"]');
 (0,_modules_events__WEBPACK_IMPORTED_MODULE_0__["default"])();
 document.addEventListener('DOMContentLoaded', _modules_UI__WEBPACK_IMPORTED_MODULE_1__["default"].displayBooks);
 btnAddBook.addEventListener('click', function (e) {
-  e.preventDefault();
-  _modules_UI__WEBPACK_IMPORTED_MODULE_1__["default"].addBookData(e);
+  return _modules_UI__WEBPACK_IMPORTED_MODULE_1__["default"].addBookData(e);
 });
 })();
 

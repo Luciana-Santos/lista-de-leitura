@@ -5,7 +5,4 @@ const btnAddBook = document.querySelector('[data-form="btn"]');
 
 initEvents();
 document.addEventListener('DOMContentLoaded', UI.displayBooks);
-btnAddBook.addEventListener('click', (e) => {
-  e.preventDefault();
-  UI.addBookData(e);
-});
+btnAddBook.addEventListener('click', (e) => UI.addBookData(e));

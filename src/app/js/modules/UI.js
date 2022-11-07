@@ -24,7 +24,7 @@ export default class UI {
         <h3>${book.title} <span class="book_id" data-book="bookId">#${
       book.id
     }</span></h3>
-        <p class="prevision" data=book="previsionDate">Previsão de término: <span>${
+        <p class="prevision" data-book="previsionDate">Previsão de término: <span>${
           book.prevision
         }</span></p>
         <div class="progress">
@@ -76,6 +76,8 @@ export default class UI {
   }
 
   static addBookData(e) {
+    e.preventDefault();
+
     const formContainer = document.querySelector('[data-form="container"]');
 
     e.preventDefault();
@@ -276,5 +278,9 @@ export default class UI {
   static updateProgressBarModal(percentage, progressBar, percentageHolder) {
     percentageHolder.innerText = `${percentage}%` || '0';
     progressBar.style.width = `${percentage}%`;
+  }
+
+  static updateDate(date, holder) {
+    holder.innerText = date;
   }
 }
