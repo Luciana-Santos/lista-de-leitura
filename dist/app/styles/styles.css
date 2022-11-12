@@ -113,11 +113,11 @@ input:focus, input:hover {
   background: var(--cl-success);
 }
 
-.progress p {
-  font-size: 0.625rem;
+.progress__info {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 0.375rem;
+  font-size: 0.625rem;
+  margin-bottom: 0.625rem;
 }
 .progress__bar {
   height: 7px;
@@ -148,6 +148,13 @@ input:focus, input:hover {
 .previsao .data-prevista {
   color: var(--cl-white);
   font-size: 1rem;
+}
+
+.completed_book {
+  text-transform: uppercase;
+  color: var(--cl-white);
+  font-weight: 700;
+  font-size: 1.125rem;
 }
 
 .container {

@@ -1,12 +1,23 @@
 import dateFormating from './dateFormating';
 import Store from './Store';
 import UI from './UI';
+import { bookCompleted } from './utils';
 
 export default function initEvents() {
+  // elementos globais
+  const btnAddBook = document.querySelector('[data-form="btn"]');
+
+  document.addEventListener('DOMContentLoaded', UI.displayBooks);
+  btnAddBook.addEventListener('click', (e) => UI.addBookData(e));
+
+  const body = document.querySelector('body');
   const ImgPreview = document.querySelector('[data-form="imgPreview"]');
   const inputCover = document.querySelector('#cover');
   const clearFormBtn = document.querySelector('[data-form="removeBtn"]');
   const bookList = document.querySelector('[data-book="list"]');
+  const modalContainer = document.querySelector('[data-modal="container"]');
+  const inputPagesPerDayValue = document.querySelector('#pagesPerDay');
+  const books = Store.getBooks();
 
   // renderiza capa na área de input
   const handleImgPreview = ({ target }) => {
@@ -38,87 +49,106 @@ export default function initEvents() {
     UI.clearInputFields();
   });
 
-  // remove livro renderizado
-  bookList.addEventListener('click', ({ target }) => UI.deleteBook(target));
+  // função que irá lidar com a parte
+  // da previsão de leitura no form principal
+  function handleDatePrevisionMainForm({ target }) {
+    const formTotalPagsValue = document.querySelector('#totalPages').value;
 
-  // abrir modal de atualizar livro
-  bookList.addEventListener('click', ({ target }) => {
-    UI.bookUpdateModal(target);
-    renderDatePreviewModal();
-  });
-
-  // cancelar atualização de leitura
-  const modalContainer = document.querySelector('[data-modal="container"]');
-  modalContainer.addEventListener('click', ({ target }) => {
-    UI.closeModal(target);
-  });
-
-  const inputPagesPerDayValue = document.querySelector('#pagesPerDay');
-
-  inputPagesPerDayValue.addEventListener('change', ({ target }) => {
-    const datePrevision = document.querySelector('[data-from="prevision"]');
-    const inputTotalPagesValue = document.querySelector('#totalPages').value;
-
-    if (target.value && inputTotalPagesValue) {
-      datePrevision.innerHTML = dateFormating(
-        inputTotalPagesValue,
+    if (formTotalPagsValue && target.value) {
+      const datePrevisionHolder = document.querySelector(
+        '[data-from="prevision"]',
+      );
+      datePrevisionHolder.innerText = dateFormating(
+        formTotalPagsValue,
         target.value,
       );
     }
-  });
+  }
 
-  let dateModal;
+  let idTarget;
+
+  // abrir modal
+  function handleUpdateModal({ target }) {
+    idTarget = target.parentElement.parentElement
+      .querySelector('[data-book="bookId"]')
+      .innerText.substring(1);
+    UI.bookUpdateModal(target, modalContainer, idTarget);
+
+    handleModalPrevisionDate(target);
+  }
+
   let dateContainer;
+  let dateModal;
 
-  function renderDatePreviewModal() {
+  // função que renderiza a previsão de leitura no modal
+  function handleModalPrevisionDate(target) {
     const modalDatePrevision = document.querySelector(
       '[data-modal="prevision"]',
     );
     dateContainer = document.querySelector('[data-modal="date"]');
     const totalPages = document.querySelector('[data-modal="totalPages"]');
+    const modal = modalContainer.querySelector('.modal');
+    const btnConfirm = document.querySelector('[data-modal="confirm"]');
 
-    if (modalDatePrevision && dateContainer && totalPages) {
+    if (dateContainer) {
       modalDatePrevision.addEventListener('change', ({ target }) => {
-        dateContainer.innerText = dateFormating(
-          totalPages.innerText,
-          target.value,
-        );
+        if (target.value > totalPages.innerText || target.value <= 0) {
+          UI.showAlert('Página atual inválida.', 'error', modal, 'beforeend');
+          btnConfirm.setAttribute('disabled', true);
+        } else {
+          btnConfirm.removeAttribute('disabled');
+          dateContainer.innerText = dateFormating(
+            totalPages.innerText,
+            target.value,
+          );
 
-        const progressBar = document.querySelector(
-          '[data-modal="progressBar"]',
-        );
-        const percentageHolder = document.querySelector(
-          '[data-modal="percentage"]',
-        );
-        const percentage = UI.getPregressPerc(
-          target.value,
-          totalPages.innerText,
-        );
+          const progressBar = document.querySelector(
+            '[data-modal="progressBar"]',
+          );
+          const percentage = UI.getPregressPerc(
+            target.value,
+            totalPages.innerText,
+          );
 
-        UI.updateProgressBarModal(percentage, progressBar, percentageHolder);
+          UI.updateProgressBarModal(percentage);
 
-        dateModal = target.value;
-        dateContainer = document.querySelector('[data-modal="date"]');
+          dateModal = target.value;
+          dateContainer = document.querySelector('[data-modal="date"]');
+        }
       });
     }
   }
 
+  // fecha o modal e passa informações
   modalContainer.addEventListener('click', ({ target }) => {
-    const dateBookPrevisionHolder = document.querySelector(
-      '[data-book="previsionDate"] span',
-    );
     if (target.classList.contains('confirm')) {
       UI.closeModal(target);
 
-      const books = Store.getBooks();
       books.forEach((book) => {
         book.currPag = dateModal;
         book.percentage = UI.getPregressPerc(book.currPag, book.pagesTotal);
         book.prevision = dateContainer.innerText;
-        Store.updateBook(book.id, book);
-        UI.updateProgressBar(book.percentage, book.currPag, book.pagesTotal);
-        UI.updateDate(book.prevision, dateBookPrevisionHolder);
+        if (+idTarget === book.id) {
+          Store.updateBook(+idTarget, book);
+          UI.updateProgressBar(book.id, book.percentage);
+          UI.updateDate(book.id, book.prevision);
+          UI.updateCurrPage(book.id, book.currPag);
+
+          bookCompleted(book);
+        }
       });
     }
+  });
+
+  bookList.addEventListener('click', (e) => {
+    e.preventDefault();
+    handleUpdateModal(e);
+    UI.deleteBook(e.target);
+  });
+  modalContainer.addEventListener('click', ({ target }) => {
+    UI.closeModal(target);
+  });
+  inputPagesPerDayValue.addEventListener('change', (e) => {
+    handleDatePrevisionMainForm(e);
   });
 }

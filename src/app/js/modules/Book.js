@@ -7,5 +7,6 @@ export default class Book {
     this.pagesTotal = pagesTotal;
     this.pagesPerDay = pagesPerDay;
     this.prevision = prevision;
+    this.completed = false;
   }
 }

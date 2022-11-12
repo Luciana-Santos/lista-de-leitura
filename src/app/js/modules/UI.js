@@ -2,6 +2,7 @@
 import Book from './Book';
 import dateFormating from './dateFormating';
 import Store from './Store';
+import { modalStructure } from './utils';
 
 export default class UI {
   static displayBooks() {
@@ -13,14 +14,17 @@ export default class UI {
   static addBookToList(book) {
     const bookList = document.querySelector('[data-book="list"]');
     const bookItem = document.createElement('article');
+    bookItem.setAttribute('id', book.id);
+
     bookItem.classList.add('book_list__item');
     const defaultCover = './assets/cover-undefined.png';
 
+    // criar função em utils para o html
     bookItem.innerHTML = `
       <div class="book_list__item__img">
         <img src="${book.cover || defaultCover}" alt="${book.title}">
       </div>
-      <div class="book_list__item__info">
+      <div class="book_list__item__info" data-book="info">
         <h3>${book.title} <span class="book_id" data-book="bookId">#${
       book.id
     }</span></h3>
@@ -28,16 +32,25 @@ export default class UI {
           book.prevision
         }</span></p>
         <div class="progress">
-          <p>${book.currPag || 0} páginas de ${
-      book.pagesTotal
-    } <span data-book="percentage">${book.percentage || '0'}%</span></p>
+          <div class="progress__info">
+            <p class="pages"><span data-book="currPage">${book.currPag || 0}
+              </span> páginas de ${book.pagesTotal}</p>
+            <p class="percentage" data-book="percentage">${
+              book.percentage || 0
+            }%
+            </p>            
+          </div>
           <div class="progress__bar">
             <span data-book="progressBar"></span>
           </div>
         </div>  
 
         <div class="book_list__item__btn" data-bookItem="btn">
-          <button class="btn btn--red update">Atualizar</button>
+          ${
+            book.completed
+              ? '<p class="completed_book">Concluído</p>'
+              : '<button class="btn btn--red update" data-book="update">Atualizar</button>'
+          }
           <i class="fa-solid fa-trash-can delete"></i>
         </div>
       </div>
@@ -46,11 +59,10 @@ export default class UI {
 
     bookList.insertAdjacentElement('afterbegin', bookItem);
 
-    const progressBar = document.querySelector('[data-book="progressBar"]');
-    const percentageHolder = document.querySelector('[data-book="percentage"]');
-    UI.updateProgressBar(book.percentage || 0, progressBar, percentageHolder);
+    UI.updateProgressBar(book.id, book.percentage || 0);
   }
 
+  // trocar para utils
   static getInputsValue() {
     const inputCover = document.querySelector('#cover');
     const inputTitleValue = document.querySelector('#title').value;
@@ -62,7 +74,7 @@ export default class UI {
       inputTotalPagesValue,
       inputPagesPerDayValue,
     );
-    const id = Math.floor(Math.random() * 9000);
+    const id = Math.floor(Math.random() * 9999999);
 
     return {
       id,
@@ -79,8 +91,6 @@ export default class UI {
     e.preventDefault();
 
     const formContainer = document.querySelector('[data-form="container"]');
-
-    e.preventDefault();
     const {
       id,
       imgBlob,
@@ -129,6 +139,7 @@ export default class UI {
     }
   }
 
+  // criar função em utils
   static clearInputFields() {
     document.querySelector('#title').value = '';
     document.querySelector('#author').value = '';
@@ -174,70 +185,31 @@ export default class UI {
     }, 2000);
   }
 
-  static bookModalRender(container, book) {
-    const defaultCover = './assets/cover-undefined.png';
-
-    container.innerHTML = `
-      <div class="modal">
-        <div class="modal__book_cover">
-          <img src="${book.cover || defaultCover}" alt="${book.title}">
-        </div>
-
-        <div class="modal__book_info">
-          <span>${book.author || 'Autor não informado'}</span>
-          <p>${book.title}</p>
-        </div>
-
-        <form class="modal__form" data-modal="form">
-          <fieldset>
-            <label for="currPag">Pág. Atual:*</label>
-            <input type="number" id="currPag" name="currPag" placeholder="${
-              book.currPag || book.pagesPerDay
-            }" data-modal="prevision">
-          </fieldset>
-          
-          <div>
-            <span>Pág. Total:*</span>
-            <p data-modal="totalPages">${book.pagesTotal}</p>
-          </div>
-        </form>
-
-        <div class="previsao">
-          <p>Previsão de término:</p>
-          <p class="data-prevista" data-modal="date">${book.prevision}</p>
-
-          <div class="progress">
-            <p data-modal="percentage">${book.percentage || '0'}%</p>
-            <div class="progress__bar">
-            <span data-modal="progressBar" style="width:${
-              book.percentage
-            }%"></span>
-          </div>
-          </div>
-        </div>
-
-        <div class="form__btn">
-          <button class="btn btn--cancel cancel" data-modal="cancel">Cancelar</button>
-          <button class="btn btn--red confirm" data-modal="confirm">OK</button>
-        </div>
-      </div>
-    `;
+  static bookModalRender(container, book, id) {
+    // separar o html para utils
+    if (book.id === +id) {
+      container.innerHTML = modalStructure(book);
+    } else console.log('logica errada');
   }
 
-  static bookUpdateModal(element) {
-    const modalContainer = document.querySelector('[data-modal="container"]');
-    const books = Store.getBooks();
-
+  // renderiza modal na tela
+  static bookUpdateModal(target, modalContainer, idTarget) {
     const body = document.querySelector('body');
-    if (element.classList.contains('update')) {
+
+    if (target.classList.contains('update')) {
       modalContainer.style.display = 'grid';
       body.style.overflowY = 'hidden';
+
+      const books = Store.getBooks();
       books.forEach((book) => {
-        UI.bookModalRender(modalContainer, book);
+        if (+book.id === +idTarget) {
+          UI.bookModalRender(modalContainer, book, idTarget);
+        }
       });
     }
   }
 
+  // // trocar para events
   static closeModal(element) {
     const modalContainer = document.querySelector('[data-modal="container"]');
     const body = document.querySelector('body');
@@ -263,24 +235,46 @@ export default class UI {
     }
   }
 
+  // // trocar para utils
   static getPregressPerc(currPag, totalPages) {
     return ((currPag / totalPages) * 100).toFixed();
   }
 
-  static updateProgressBar(percentage) {
-    const progressBar = document.querySelector('[data-book="progressBar"]');
-    const percentageHolder = document.querySelector('[data-book="percentage"]');
+  static updateProgressBar(id, percentage) {
+    const element = document.getElementById(id);
+    const percentageHolder = element.querySelector('[data-book="percentage"]');
+    const progressBar = element.querySelector('[data-book="progressBar"]');
 
     percentageHolder.innerText = `${percentage}%` || '0';
     progressBar.style.width = `${percentage}%`;
   }
 
-  static updateProgressBarModal(percentage, progressBar, percentageHolder) {
-    percentageHolder.innerText = `${percentage}%` || '0';
-    progressBar.style.width = `${percentage}%`;
+  static updateProgressBarModal(percentage) {
+    const progressBarHolder = document.querySelector(
+      '[data-modal="progressBar"]',
+    );
+    const percentageHolder = document.querySelector(
+      '[data-modal="percentage"]',
+    );
+
+    progressBarHolder.style.width = `${percentage}%`;
+    if (percentage > 100) percentageHolder.innerText = '100%';
+    else percentageHolder.innerText = `${percentage}%` || '0';
   }
 
-  static updateDate(date, holder) {
-    holder.innerText = date;
+  static updateDate(id, date) {
+    const element = document.getElementById(id);
+    const dateHolder = element.querySelector(
+      '[data-book="previsionDate"] span',
+    );
+
+    dateHolder.innerText = date;
+  }
+
+  static updateCurrPage(id, page) {
+    const element = document.getElementById(id);
+    const currPageHolder = element.querySelector('[data-book="currPage"]');
+
+    currPageHolder.innerText = page;
   }
 }

@@ -122,12 +122,13 @@ input {
 
 // progress bar
 .progress {
-  p {
-    font-size: rem(10);
+  &__info {
     display: flex;
     justify-content: space-between;
-    margin-bottom: rem(6);
+    font-size: rem(10);
+    margin-bottom: rem(10);
   }
+
   &__bar {
     height: 7px;
     overflow: hidden;
@@ -161,4 +162,11 @@ input {
     color: var(--cl-white);
     font-size: rem(16);
   }
+}
+
+.completed_book {
+  text-transform: uppercase;
+  color: var(--cl-white);
+  font-weight: 700;
+  font-size: rem(18);
 }
