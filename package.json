@@ -5,7 +5,7 @@
   "main": "dist/index.html",
   "author": "LucianaSantos",
   "scripts": {
-    "build:sass": "sass src/app/styles:dist/app/styles",
+    "build:sass": "sass src/app/styles:dist/app/styles/",
     "build:js": "webpack --mode production",
     "copy:html": "copyfiles -u 1 ./src/*.html dist",
     "copy:assets": "copyfiles -u 1 ./src/assets/**/* dist",
@@ -17,8 +17,8 @@
     "watch": "npm-run-all --parallel watch:*",
     "serve": "browser-sync start --server dist --files dist",
     "start": "npm-run-all copy --parallel watch serve",
-    "build": "npm-run-all copy:html dist:*",
-    "postbuild": "postcss dist/app/styles*.css -u autoprefixer cssnano -r"
+    "build": "npm-run-all copy:html build:*",
+    "postbuild": "postcss dist/app/styles/*.css -u autoprefixer cssnano -r"
   },
   "dependencies": {
     "autoprefixer": "^10.4.2",
