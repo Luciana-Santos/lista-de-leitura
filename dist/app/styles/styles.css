@@ -1,4 +1,6 @@
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -9,7 +11,9 @@ img {
   display: block;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   line-height: 1;
   font-weight: 400;
 }
@@ -22,19 +26,144 @@ ul {
   list-style: none;
 }
 
+input {
+  border: none;
+}
+
 body {
   min-height: 100vh;
   line-height: 1.5;
-  background-color: var(--cl-vdark-blue);
+  background-color: var(--cl-vk-violet);
   color: var(--cl-body);
+  font-family: var(--ff-nunito);
+  position: relative;
+}
+
+fieldset {
+  border: none;
+}
+
+input {
+  background-color: var(--cl-dk-violet);
+  padding-block: 0.5rem;
+  padding-inline: 0.375rem;
+  font-size: 1rem;
+  border-radius: 0.25rem;
+  width: 100%;
+  margin-bottom: 1.25rem;
+  color: var(--cl-white);
+}
+input::placeholder {
+  color: var(--cl-body);
+}
+input:focus, input:hover {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--cl-vk-violet), 0 0 0 6px var(--cl-dk-violet);
 }
 
 .section {
   padding-block: 1.875rem;
 }
 
+.btn {
+  border-radius: 0.25rem;
+  background: transparent;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  padding-block: 0.625rem;
+}
+.btn:disabled {
+  background: #ea566f;
+  cursor: not-allowed;
+}
+
+.form__btn {
+  justify-self: end;
+  display: flex;
+  gap: 20px;
+}
+
+.btn--cancel {
+  color: var(--cl-body);
+  text-decoration: underline;
+}
+
+.btn--red {
+  padding-inline: 1.25rem;
+  background: var(--cl-accent);
+  transition: 0.3s ease;
+  color: var(--cl-white);
+}
+
+.alert {
+  color: #fff;
+  padding-block: 0.25rem;
+  padding-inline: 0.625rem;
+  margin-top: 1.25rem;
+  width: max-content;
+  margin-inline: auto;
+}
+
+.alert-error {
+  background: var(--cl-error);
+}
+
+.alert-success {
+  background: var(--cl-success);
+}
+
+.progress__info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.625rem;
+  margin-bottom: 0.625rem;
+}
+.progress__bar {
+  height: 7px;
+  overflow: hidden;
+  background: var(--cl-dk-violet);
+  border-radius: 0.625rem;
+  position: relative;
+}
+.progress__bar span {
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1%;
+  height: 100%;
+  background: var(--cl-md-blue);
+}
+
+.previsao {
+  display: grid;
+  gap: 0.375rem;
+  font-size: 0.75rem;
+}
+.previsao i {
+  margin-right: 0.625rem;
+  font-size: 0.875rem;
+}
+.previsao .data-prevista {
+  color: var(--cl-white);
+  font-size: 1rem;
+}
+
+.completed_book {
+  text-transform: uppercase;
+  color: var(--cl-white);
+  font-weight: 700;
+  font-size: 1.125rem;
+}
+
 .container {
-  width: min(100% - 2rem, 55rem);
+  width: min(100% - 2rem, 40rem);
+  margin-inline: auto;
+}
+
+.main_container {
+  width: min(100% - 2rem, 75rem);
   margin-inline: auto;
 }
 
@@ -45,13 +174,254 @@ body {
   --cl-accent: hsl(349, 83%, 45%);
   --cl-md-blue: hsl(213, 38%, 37%);
   --cl-dk-violet: hsl(256, 19%, 16%);
+  --cl-md-violet: hsla(256, 19%, 16%, 0.18);
   --cl-vk-violet: hsl(260, 21%, 5%);
+  --cl-error: hsl(0, 65%, 51%);
+  --cl-success: hsl(123, 43%, 39%);
+  --cl-backdrop: hsla(0, 0%, 0%, 0.7);
+  --ff-nunito: "Nunito", sans-serif;
 }
 
-.titulo {
-  color: steelblue;
-  text-transform: uppercase;
-  font-family: Consolas, monospace;
+.logo {
+  text-align: center;
+  padding-block: 3.75rem;
+}
+.logo a {
+  color: var(--cl-white);
+}
+.logo a i {
+  color: var(--cl-md-blue);
+}
+
+.add_book {
+  background-color: var(--cl-md-violet);
+  padding-block: 3.75rem;
+  border-radius: 0.25rem;
+  padding-inline: clamp(1.875rem, 5vw, 3.75rem);
+}
+.add_book__form {
+  display: grid;
+  justify-content: center;
+  gap: 3.75rem;
+}
+.add_book__form__img {
+  border: none;
+  justify-self: center;
+}
+.add_book__form__img input {
+  display: none;
+}
+.add_book__form__img label {
+  display: grid;
+  place-content: center;
+  cursor: pointer;
+  width: 8.5625rem;
+  height: 10.625rem;
+  border: 2px solid var(--cl-dk-violet);
+  border-radius: 0.25rem;
+}
+.add_book__form__img i {
+  font-size: 2.5rem;
+  color: var(--cl-dk-violet);
+}
+.add_book__form__info label {
+  display: block;
+}
+.add_book__form__info--bottom-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 1.875rem;
+}
+.add_book__form__info--bottom-row label i {
+  color: var(--cl-body);
+  font-size: 0.8125rem;
+}
+.add_book__form__info--bottom-row .btn {
+  background: var(--cl-md-blue);
+  width: max-content;
+  padding-inline: 0.625rem;
+  color: var(--cl-vk-violet);
+}
+.add_book .book_info__tooltip_container {
+  position: relative;
+}
+.add_book .book_info__tooltip_container i:hover .book_info__tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+.add_book .book_info__tooltip_container .book_info__tooltip {
+  font-family: var(--ff-nunito);
+  visibility: hidden;
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: var(--cl-vk-violet);
+  width: 6.75rem;
+  font-size: 0.75rem;
+  padding-inline: 0.5rem;
+  padding-block: 0.25rem;
+  line-height: 1.125rem;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.book_list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding-block: 3.75rem;
+  gap: 1.25rem;
+}
+@media (min-width: 74.375em) {
+  .book_list {
+    justify-content: flex-start;
+  }
+}
+.book_list__item {
+  padding-block: 1.25rem;
+  padding-inline: 1.25rem;
+  transition: 0.3s ease;
+  display: flex;
+  gap: 1.25rem;
+  flex-basis: 560px;
+  flex-wrap: wrap;
+  max-width: 560px;
+  border-radius: 0.375rem;
+}
+.book_list__item__img {
+  width: 160px;
+  flex-shrink: 0;
+  border-radius: 0.375rem;
+  overflow: hidden;
+}
+.book_list__item__info {
+  display: grid;
+  gap: 1.25rem;
+  width: clamp(60%, 5vw, 100%);
+  flex: 1;
+  min-width: 240px;
+}
+.book_list__item__info h3 {
+  color: var(--cl-white);
+  line-height: 1.5rem;
+}
+.book_list__item__info .book_id {
+  font-size: 0.625rem;
+  display: block;
+  color: var(--cl-body);
+}
+.book_list__item__info .prevision {
+  font-size: 0.75rem;
+}
+.book_list__item__info .prevision span {
+  font-size: 1rem;
+  background: var(--cl-dk-violet);
+  padding-block: 0.25rem;
+  padding-inline: 0.25rem;
+  border-radius: 0.25rem;
+  margin-left: 0.375rem;
+}
+.book_list__item__info .book_list__item__btn {
+  display: flex;
+  place-items: center;
+  gap: 1.25rem;
+}
+.book_list__item__info .book_list__item__btn .btn--red {
+  font-size: 0.875rem;
+}
+.book_list__item__info .book_list__item__btn i {
+  color: var(--cl-dk-violet);
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+.book_list__item:hover {
+  background: var(--cl-md-violet);
+}
+
+.modal_container {
+  width: 100%;
+  height: 100%;
+  background: var(--cl-backdrop);
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: none;
+  padding-inline: 1.25rem;
+}
+.modal_container .modal {
+  box-shadow: inset 0 100px var(--cl-dk-violet);
+  justify-self: center;
+  align-self: center;
+  width: clamp(260px, 70vw, 530px);
+  min-width: 260px;
+  display: grid;
+  gap: 0.625rem;
+  justify-items: center;
+  background-color: var(--cl-vk-violet);
+  padding-block: 2.75rem;
+  padding-inline: clamp(1.25rem, 5vw, 2.75rem);
+  border-radius: 0.375rem;
+}
+.modal_container .modal__book_cover {
+  width: 130px;
+  margin-inline: auto;
+  margin-bottom: 1.25rem;
+  border-radius: 0.375rem;
+}
+.modal_container .modal__book_info {
+  text-align: center;
+  margin-bottom: 1.875rem;
+}
+.modal_container .modal__book_info span {
+  display: block;
+  margin-bottom: 0.625rem;
+  font-size: 0.875rem;
+}
+.modal_container .modal__book_info p {
+  font-size: 1.125rem;
+  color: var(--cl-white);
+  font-weight: 700;
+}
+.modal_container .modal__form {
+  display: flex;
+  gap: 1.875rem;
+}
+.modal_container .modal__form fieldset {
+  display: grid;
+  position: relative;
+}
+.modal_container .modal__form fieldset::after {
+  content: "";
+  display: block;
+  height: 28px;
+  width: 2px;
+  background: var(--cl-dk-violet);
+  position: absolute;
+  bottom: 22px;
+  right: -15px;
+  transform: rotate(24deg);
+}
+.modal_container .modal__form div p {
+  color: var(--cl-white);
+  background: var(--cl-dk-violet);
+  padding-block: 0.5rem;
+  padding-inline: 0.375rem;
+  font-size: 0.875rem;
+  border-radius: 0.25rem;
+}
+.modal_container .modal__form input {
+  max-width: 6.25rem;
+}
+.modal_container .modal .previsao {
+  width: 100%;
+  margin-bottom: 3.75rem;
+}
+.modal_container .modal .progress {
+  display: grid;
+}
+.modal_container .modal .progress p {
+  justify-self: end;
 }
 
 /*# sourceMappingURL=styles.css.map */

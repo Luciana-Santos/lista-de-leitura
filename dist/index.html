@@ -5,17 +5,86 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Static Setup</title>
+  <title>Lista de Leitura</title>
+  <link rel="icon" type="image/x-icon" href="./assets/favicon-32x32.png">
   <link rel="stylesheet" href="app/styles/styles.css">
+
+  <!-- google fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- font awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <script src="./app/js/index.js" defer></script>
 </head>
 
 <body>
   <div class="container">
-    <h1 class="titulo">Modelo inicial.</h1>
-    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Omnis facere quia recusandae in mollitia excepturi eveniet magni consequatur dolor nisi vel sed dolores, inventore obcaecati fugiat neque eius culpa modi.</p>
+    <h1 class="logo"><a href="index.html"><i class="fa-solid fa-bookmark"></i> Lista de Leitura</a></h1>
 
+    <section class="add_book" data-form="container">
+      <form class="add_book__form" data-form="form">
+        <fieldset class="add_book__form__img">
+          <label data-form="imgPreview">
+            <i class="fa-regular fa-image"></i>
+            <input type="file" accept="image/*" id="cover">
+          </label>
+        </fieldset>
+
+        <div class="add_book__form__info">
+          <fieldset class="add_book__form__info--top-row">
+            <label for="title">Titulo:*</label>
+            <input required type="text" name="title" id="title" placeholder="O senhor dos aneis">
+            <label for="author">Autor:</label>
+            <input type="text" name="author" id="author" placeholder="JRR Tolkien">
+          </fieldset>
+
+          <fieldset data-form="inputs" class="add_book__form__info--bottom-row">
+            <label>Total de páginas:* <input required type="number" name="total pages" class="form_input" id="totalPages" placeholder="576"></label>
+            <label class="book_info__tooltip_container">Meta diaria:* <i class="fa-solid fa-circle-info"> <span class="book_info__tooltip">Quantidade de páginas a serem lidas por dia.</span></i> <input required type="number" name="pages per day" class="form_input" id="pagesPerDay" placeholder="60"></label>
+          </fieldset>
+        </div>
+
+        <div class="previsao">
+          <p>Previsão de término:</p>
+          <p><i class="fa-solid fa-flag"></i><span class="data-prevista" data-from="prevision">00/00/0000</span></p>
+        </div>
+
+        <div class="form__btn">
+          <span class="btn btn--cancel" data-form="removeBtn">Descartar</span>
+          <button type="submit" class="btn btn--red" data-form="btn">Adicionar</button>
+        </div>
+      </form>
+    </section>
   </div>
-  <script src="./app/js/index.js" defer></script>
+
+  <main class="book_list main_container" data-book="list">
+    <!-- <article class="book_list__item">
+      <div class="book_list__item__img">
+        <img src="https://i.pinimg.com/564x/5c/d9/cf/5cd9cfb4b8f189df064582ab6cf6dc07.jpg" alt="Only a Monster">
+      </div>
+      <div class="book_list__item__info">
+        <h3>Only a Monster</h3>
+        <p class="prevision">Previsão de término: <span>30/10/2022</span></p>
+        <div class="progress">
+          <p>306 páginas de 396 <span>74%</span></p>
+          <div class="progress__bar">
+            <span></span>
+          </div>
+        </div>
+
+        <div class="book_list__item__btn" data-bookItem="btn">
+          <button class="btn btn--red update">Atualizar</button>
+          <i class="fa-solid fa-trash-can delete"></i>
+        </div>
+      </div>
+    </article> -->
+
+  </main>
+
+  <section class="modal_container backdrop" data-modal="container"></section>
 </body>
 
 </html>

@@ -1,0 +1,99 @@
+@use '../utils/' as *;
+
+.modal_container {
+  width: 100%;
+  height: 100%;
+  background: var(--cl-backdrop);
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: none;
+  padding-inline: rem(20);
+
+  .modal {
+    box-shadow: inset 0 100px var(--cl-dk-violet);
+    justify-self: center;
+    align-self: center;
+    width: clamp(260px, 70vw, 530px);
+    min-width: 260px;
+    display: grid;
+    gap: rem(10);
+    justify-items: center;
+    background-color: var(--cl-vk-violet);
+    padding-block: rem(44);
+    padding-inline: clamp(rem(20), 5vw, rem(44));
+    border-radius: rem(6);
+
+    &__book_cover {
+      width: 130px;
+      margin-inline: auto;
+      margin-bottom: rem(20);
+      border-radius: rem(6);
+    }
+
+    &__book_info {
+      text-align: center;
+      margin-bottom: rem(30);
+
+      span {
+        display: block;
+        margin-bottom: rem(10);
+        font-size: rem(14);
+      }
+
+      p {
+        font-size: rem(18);
+        color: var(--cl-white);
+        font-weight: 700;
+      }
+    }
+
+    &__form {
+      display: flex;
+      gap: rem(30);
+
+      fieldset {
+        display: grid;
+        position: relative;
+
+        &::after {
+          content: '';
+          display: block;
+          height: 28px;
+          width: 2px;
+          background: var(--cl-dk-violet);
+          position: absolute;
+          bottom: 22px;
+          right: -15px;
+          transform: rotate(24deg);
+        }
+      }
+
+      div p {
+        color: var(--cl-white);
+        background: var(--cl-dk-violet);
+        padding-block: rem(8);
+        padding-inline: rem(6);
+        font-size: rem(14);
+        border-radius: rem(4);
+      }
+
+      input {
+        max-width: rem(100);
+      }
+    }
+
+    .previsao {
+      width: 100%;
+      margin-bottom: rem(60);
+    }
+
+    .progress {
+      display: grid;
+
+      p {
+        justify-self: end;
+      }
+    }
+  }
+}

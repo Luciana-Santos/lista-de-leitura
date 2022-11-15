@@ -1,0 +1,88 @@
+@use '../utils/' as *;
+
+.add_book {
+  background-color: var(--cl-md-violet);
+  padding-block: rem(60);
+  border-radius: rem(4);
+  padding-inline: clamp(rem(30), 5vw, rem(60));
+
+  &__form {
+    display: grid;
+    justify-content: center;
+    gap: rem(60);
+
+    &__img {
+      border: none;
+      justify-self: center;
+
+      input {
+        display: none;
+      }
+
+      label {
+        display: grid;
+        place-content: center;
+        cursor: pointer;
+        width: rem(137);
+        height: rem(170);
+        border: 2px solid var(--cl-dk-violet);
+        border-radius: rem(4);
+      }
+
+      i {
+        font-size: rem(40);
+        color: var(--cl-dk-violet);
+      }
+    }
+
+    &__info {
+      label {
+        display: block;
+      }
+
+      &--bottom-row {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        column-gap: rem(30);
+
+        label i {
+          color: var(--cl-body);
+          font-size: rem(13);
+        }
+
+        .btn {
+          background: var(--cl-md-blue);
+          width: max-content;
+          padding-inline: rem(10);
+          color: var(--cl-vk-violet);
+        }
+      }
+    }
+  }
+
+  .book_info__tooltip_container {
+    position: relative;
+
+    i:hover .book_info__tooltip {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .book_info__tooltip {
+      font-family: var(--ff-nunito);
+      visibility: hidden;
+      display: block;
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: var(--cl-vk-violet);
+      width: rem(108);
+      font-size: rem(12);
+      padding-inline: rem(8);
+      padding-block: rem(4);
+      line-height: rem(18);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+  }
+}
