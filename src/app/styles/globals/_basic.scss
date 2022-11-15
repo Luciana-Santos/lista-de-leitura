@@ -70,12 +70,6 @@ input {
   padding-block: rem(30);
 }
 
-.form__btn {
-  justify-self: end;
-  display: flex;
-  gap: (20px);
-}
-
 .btn {
   border-radius: rem(4);
   background: transparent;
@@ -83,6 +77,17 @@ input {
   font-size: rem(16);
   cursor: pointer;
   padding-block: rem(10);
+
+  &:disabled {
+    background: #ea566f;
+    cursor: not-allowed;
+  }
+}
+
+.form__btn {
+  justify-self: end;
+  display: flex;
+  gap: (20px);
 }
 
 .btn--cancel {
@@ -95,12 +100,6 @@ input {
   background: var(--cl-accent);
   transition: 0.3s ease;
   color: var(--cl-white);
-
-  &:focus,
-  &:hover {
-    outline: none;
-    box-shadow: 0 0 0 3px var(--cl-vk-violet), 0 0 0 6px var(--cl-accent);
-  }
 }
 
 .alert {

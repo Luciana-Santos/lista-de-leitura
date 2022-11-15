@@ -10,7 +10,6 @@ export default function initEvents() {
   document.addEventListener('DOMContentLoaded', UI.displayBooks);
   btnAddBook.addEventListener('click', (e) => UI.addBookData(e));
 
-  const body = document.querySelector('body');
   const ImgPreview = document.querySelector('[data-form="imgPreview"]');
   const inputCover = document.querySelector('#cover');
   const clearFormBtn = document.querySelector('[data-form="removeBtn"]');

@@ -395,7 +395,6 @@ function initEvents() {
   btnAddBook.addEventListener('click', function (e) {
     return _UI__WEBPACK_IMPORTED_MODULE_2__["default"].addBookData(e);
   });
-  var body = document.querySelector('body');
   var ImgPreview = document.querySelector('[data-form="imgPreview"]');
   var inputCover = document.querySelector('#cover');
   var clearFormBtn = document.querySelector('[data-form="removeBtn"]');
@@ -547,7 +546,7 @@ function bookCompleted(book) {
     var completedText = document.createElement('p');
     completedText.innerText = 'Concluído!';
     completedText.classList.add('completed_book');
-    btnUpdateContainer.insertAdjacentElement('afterbegin', completedText); // atualizando todos os itens
+    btnUpdateContainer.insertAdjacentElement('afterbegin', completedText); // tá atualizando todos os itens
 
     var books = _Store__WEBPACK_IMPORTED_MODULE_0__["default"].getBooks();
     books.forEach(function (book) {

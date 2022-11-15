@@ -12,7 +12,7 @@ export function bookCompleted(book) {
     completedText.classList.add('completed_book');
     btnUpdateContainer.insertAdjacentElement('afterbegin', completedText);
 
-    // atualizando todos os itens
+    // tá atualizando todos os itens
     const books = Store.getBooks();
     books.forEach((book) => {
       book.completed = true;
