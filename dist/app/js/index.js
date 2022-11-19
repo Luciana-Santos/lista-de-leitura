@@ -492,7 +492,9 @@ function bookCompleted(idTarget, book) {
   var btnContainer = bookContainer.querySelector('[data-bookitem="btn"]');
   var btnUpdate = bookContainer.querySelector('[data-book="update"]'); // tá atualizando todos os itens
 
-  if (book.currPag >= 100) {
+  console.log(book.currPag, book.pagesTotal);
+
+  if (book.currPag >= book.pagesTotal) {
     var completedText = document.createElement('p');
     completedText.innerText = 'Concluído!';
     completedText.classList.add('completed_book');
