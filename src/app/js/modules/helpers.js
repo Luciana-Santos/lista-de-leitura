@@ -116,13 +116,15 @@ function daysToSeconds(days) {
 }
 
 export function dateFormating(totalPages, pagesPerDay) {
+  if (totalPages <= 0 || pagesPerDay <= 0) return '00/00/0000';
+
   const dateNow = new Date();
   const previsionDays = totalPages / pagesPerDay;
   const secondsFromDays = daysToSeconds(previsionDays);
 
   dateNow.setSeconds(dateNow.getSeconds() + secondsFromDays);
-
   const datePreview = dateNow.toLocaleDateString('pt-BR');
+
   return datePreview;
 }
 

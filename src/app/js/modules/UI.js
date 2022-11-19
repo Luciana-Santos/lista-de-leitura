@@ -75,7 +75,9 @@ export default class UI {
     if (
       inputTitleValue === '' ||
       inputTotalPagesValue === '' ||
-      inputPagesPerDayValue === ''
+      inputTotalPagesValue <= 0 ||
+      inputPagesPerDayValue === '' ||
+      inputPagesPerDayValue <= 0
     ) {
       // alerta de error
       UI.showAlert(

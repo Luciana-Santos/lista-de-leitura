@@ -186,7 +186,7 @@ var UI = /*#__PURE__*/function () {
           datePrevision = _UI$getInputsValue.datePrevision; // validate
 
 
-      if (inputTitleValue === '' || inputTotalPagesValue === '' || inputPagesPerDayValue === '') {
+      if (inputTitleValue === '' || inputTotalPagesValue === '' || inputTotalPagesValue <= 0 || inputPagesPerDayValue === '' || inputPagesPerDayValue <= 0) {
         // alerta de error
         UI.showAlert('Por favor, preencha os campos marcados com *.', 'error', formContainer, 'beforeend');
       } else {
@@ -529,6 +529,7 @@ function daysToSeconds(days) {
 }
 
 function dateFormating(totalPages, pagesPerDay) {
+  if (totalPages <= 0 || pagesPerDay <= 0) return '00/00/0000';
   var dateNow = new Date();
   var previsionDays = totalPages / pagesPerDay;
   var secondsFromDays = daysToSeconds(previsionDays);
