@@ -19,8 +19,10 @@ export function bookCompleted(book) {
     // tá atualizando todos os itens
     const books = Store.getBooks();
     books.forEach((book) => {
-      book.completed = true;
-      Store.updateBook(book.id, book);
+      if (book.currPag >= 100) {
+        book.completed = true;
+        Store.updateBook(book.id, book);
+      }
     });
   }
 }

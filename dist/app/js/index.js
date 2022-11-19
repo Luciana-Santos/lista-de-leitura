@@ -508,8 +508,10 @@ function bookCompleted(book) {
 
     var books = _Store__WEBPACK_IMPORTED_MODULE_0__["default"].getBooks();
     books.forEach(function (book) {
-      book.completed = true;
-      _Store__WEBPACK_IMPORTED_MODULE_0__["default"].updateBook(book.id, book);
+      if (book.currPag >= 100) {
+        book.completed = true;
+        _Store__WEBPACK_IMPORTED_MODULE_0__["default"].updateBook(book.id, book);
+      }
     });
   }
 } // retorna o html do modal
