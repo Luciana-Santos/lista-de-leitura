@@ -1,7 +1,8 @@
-import dateFormating from './dateFormating';
 import Store from './Store';
 import UI from './UI';
-import { bookCompleted } from './utils';
+import { bookCompleted, clearInputFields, dateFormating } from './helpers';
+
+// aqui fica todos os eventos
 
 export default function initEvents() {
   // elementos globais
@@ -9,8 +10,8 @@ export default function initEvents() {
 
   document.addEventListener('DOMContentLoaded', UI.displayBooks);
   btnAddBook.addEventListener('click', (e) => {
-    UI.addBookData(e);
-    location.reload();
+    e.preventDefault();
+    UI.addBookData();
   });
 
   const ImgPreview = document.querySelector('[data-form="imgPreview"]');
@@ -48,7 +49,7 @@ export default function initEvents() {
 
   clearFormBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    UI.clearInputFields();
+    clearInputFields();
   });
 
   // função que irá lidar com a parte

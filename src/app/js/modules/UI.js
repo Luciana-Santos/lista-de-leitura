@@ -1,8 +1,14 @@
 /* eslint-disable indent */
 import Book from './Book';
-import dateFormating from './dateFormating';
 import Store from './Store';
-import { modalStructure } from './utils';
+import {
+  bookListStructure,
+  clearInputFields,
+  dateFormating,
+  modalStructure,
+} from './helpers';
+
+// aqui fica só o que renderiza na tela
 
 export default class UI {
   static displayBooks() {
@@ -17,44 +23,8 @@ export default class UI {
     bookItem.setAttribute('id', book.id);
 
     bookItem.classList.add('book_list__item');
-    const defaultCover = './assets/cover-undefined.png';
 
-    // criar função em utils para o html
-    bookItem.innerHTML = `
-      <div class="book_list__item__img">
-        <img src="${book.cover || defaultCover}" alt="${book.title}">
-      </div>
-      <div class="book_list__item__info" data-book="info">
-        <h3>${book.title} <span class="book_id" data-book="bookId">#${
-      book.id
-    }</span></h3>
-        <p class="prevision" data-book="previsionDate">Previsão de término: <span>${
-          book.prevision
-        }</span></p>
-        <div class="progress">
-          <div class="progress__info">
-            <p class="pages"><span data-book="currPage">${book.currPag || 0}
-              </span> páginas de ${book.pagesTotal}</p>
-            <p class="percentage" data-book="percentage">${
-              book.percentage || 0
-            }%
-            </p>            
-          </div>
-          <div class="progress__bar">
-            <span data-book="progressBar"></span>
-          </div>
-        </div>  
-
-        <div class="book_list__item__btn" data-bookItem="btn">
-          ${
-            book.completed
-              ? '<p class="completed_book">Concluído</p>'
-              : '<button class="btn btn--red update" data-book="update">Atualizar</button>'
-          }
-          <i class="fa-solid fa-trash-can delete"></i>
-        </div>
-      </div>
-    `;
+    bookItem.innerHTML = bookListStructure(book);
     bookItem.dataset.book = 'item';
 
     bookList.insertAdjacentElement('afterbegin', bookItem);
@@ -65,6 +35,7 @@ export default class UI {
   // trocar para utils
   static getInputsValue() {
     const inputCover = document.querySelector('#cover');
+
     const inputTitleValue = document.querySelector('#title').value;
     const inputAuthorValue = document.querySelector('#author').value;
     const inputTotalPagesValue = document.querySelector('#totalPages').value;
@@ -87,10 +58,9 @@ export default class UI {
     };
   }
 
-  static addBookData(e) {
-    e.preventDefault();
-
+  static addBookData() {
     const formContainer = document.querySelector('[data-form="container"]');
+
     const {
       id,
       imgBlob,
@@ -132,28 +102,13 @@ export default class UI {
       Store.addBook(book);
 
       // limpar campos do form
-      UI.clearInputFields();
+      clearInputFields();
+
+      location.reload();
 
       // alerta de sucesso
       UI.showAlert('Livro adicionado!', 'success', formContainer, 'beforeend');
     }
-  }
-
-  // criar função em utils
-  static clearInputFields() {
-    document.querySelector('#title').value = '';
-    document.querySelector('#author').value = '';
-    document.querySelector('#totalPages').value = '';
-    document.querySelector('#pagesPerDay').value = '';
-    const inputCover = document.querySelector('#cover');
-    const iconImg = document.querySelector('.fa-image');
-    const imgPreview = document.querySelector('[data-image="preview"]');
-
-    imgPreview && imgPreview.remove();
-    const datePrevision = document.querySelector('[data-from="prevision"]');
-    datePrevision.innerText = '00/00/0000';
-    iconImg.style.display = 'block';
-    inputCover.removeAttribute('disabled');
   }
 
   static deleteBook(element) {
@@ -182,11 +137,10 @@ export default class UI {
 
     setTimeout(() => {
       document.querySelector('.alert').remove();
-    }, 2000);
+    }, 4000);
   }
 
   static bookModalRender(container, book, id) {
-    // separar o html para utils
     if (book.id === +id) {
       container.innerHTML = modalStructure(book);
     } else console.log('logica errada');
