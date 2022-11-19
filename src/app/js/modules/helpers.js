@@ -5,25 +5,20 @@ import Store from './Store';
 const defaultCover = './assets/cover-undefined.png';
 
 // renderiza mensagem de livro concluído
-export function bookCompleted(book) {
-  const btnUpdateContainer = document.querySelector('[data-bookItem="btn"]');
-  const btnUpdate = btnUpdateContainer.querySelector('button');
+export function bookCompleted(idTarget, book) {
+  const bookContainer = document.getElementById(idTarget);
+  const btnContainer = bookContainer.querySelector('[data-bookitem="btn"]');
+  const btnUpdate = bookContainer.querySelector('[data-book="update"]');
 
-  if (+book.percentage === 100) {
-    btnUpdate.remove();
+  // tá atualizando todos os itens
+  if (book.currPag >= 100) {
     const completedText = document.createElement('p');
     completedText.innerText = 'Concluído!';
     completedText.classList.add('completed_book');
-    btnUpdateContainer.insertAdjacentElement('afterbegin', completedText);
-
-    // tá atualizando todos os itens
-    const books = Store.getBooks();
-    books.forEach((bookItem) => {
-      if (bookItem.currPag >= 100) {
-        bookItem.completed = true;
-        Store.updateBook(bookItem.id, bookItem);
-      }
-    });
+    btnContainer.insertAdjacentElement('afterbegin', completedText);
+    btnUpdate.remove();
+    book.completed = true;
+    Store.updateBook(book.id, book);
   }
 }
 

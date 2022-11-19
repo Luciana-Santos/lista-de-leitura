@@ -130,7 +130,7 @@ export default function initEvents() {
           UI.updateDate(book.id, book.prevision);
           UI.updateCurrPage(book.id, book.currPag);
 
-          bookCompleted(book);
+          bookCompleted(+idTarget, book);
         }
       });
     }
