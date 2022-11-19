@@ -490,9 +490,7 @@ var defaultCover = './assets/cover-undefined.png'; // renderiza mensagem de livr
 function bookCompleted(idTarget, book) {
   var bookContainer = document.getElementById(idTarget);
   var btnContainer = bookContainer.querySelector('[data-bookitem="btn"]');
-  var btnUpdate = bookContainer.querySelector('[data-book="update"]'); // tá atualizando todos os itens
-
-  console.log(book.currPag, book.pagesTotal);
+  var btnUpdate = bookContainer.querySelector('[data-book="update"]');
 
   if (book.currPag >= book.pagesTotal) {
     var completedText = document.createElement('p');

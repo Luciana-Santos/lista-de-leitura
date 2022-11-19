@@ -10,8 +10,6 @@ export function bookCompleted(idTarget, book) {
   const btnContainer = bookContainer.querySelector('[data-bookitem="btn"]');
   const btnUpdate = bookContainer.querySelector('[data-book="update"]');
 
-  // tá atualizando todos os itens
-  console.log(book.currPag, book.pagesTotal);
   if (book.currPag >= book.pagesTotal) {
     const completedText = document.createElement('p');
     completedText.innerText = 'Concluído!';
