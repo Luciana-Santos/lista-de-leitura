@@ -18,10 +18,10 @@ export function bookCompleted(book) {
 
     // tá atualizando todos os itens
     const books = Store.getBooks();
-    books.forEach((book) => {
-      if (book.currPag >= 100) {
-        book.completed = true;
-        Store.updateBook(book.id, book);
+    books.forEach((bookItem) => {
+      if (bookItem.currPag >= 100) {
+        bookItem.completed = true;
+        Store.updateBook(bookItem.id, bookItem);
       }
     });
   }
@@ -142,4 +142,7 @@ export function clearInputFields() {
   datePrevision.innerText = '00/00/0000';
   iconImg.style.display = 'block';
   inputCover.removeAttribute('disabled');
+}
+export function getProgressPerc(currPag, totalPages) {
+  return ((currPag / totalPages) * 100).toFixed();
 }

@@ -1,19 +1,15 @@
 import Store from './Store';
 import UI from './UI';
-import { bookCompleted, clearInputFields, dateFormating } from './helpers';
-
-// aqui fica todos os eventos
+import {
+  bookCompleted,
+  clearInputFields,
+  dateFormating,
+  getProgressPerc,
+} from './helpers';
 
 export default function initEvents() {
   // elementos globais
   const btnAddBook = document.querySelector('[data-form="btn"]');
-
-  document.addEventListener('DOMContentLoaded', UI.displayBooks);
-  btnAddBook.addEventListener('click', (e) => {
-    e.preventDefault();
-    UI.addBookData();
-  });
-
   const ImgPreview = document.querySelector('[data-form="imgPreview"]');
   const inputCover = document.querySelector('#cover');
   const clearFormBtn = document.querySelector('[data-form="removeBtn"]');
@@ -21,6 +17,8 @@ export default function initEvents() {
   const modalContainer = document.querySelector('[data-modal="container"]');
   const inputPagesPerDayValue = document.querySelector('#pagesPerDay');
   const books = Store.getBooks();
+
+  let idTarget;
 
   // renderiza capa na área de input
   const handleImgPreview = ({ target }) => {
@@ -68,8 +66,6 @@ export default function initEvents() {
     }
   }
 
-  let idTarget;
-
   // abrir modal
   function handleUpdateModal({ target }) {
     idTarget = target.parentElement.parentElement
@@ -84,7 +80,7 @@ export default function initEvents() {
   let dateModal;
 
   // função que renderiza a previsão de leitura no modal
-  function handleModalPrevisionDate(target) {
+  function handleModalPrevisionDate() {
     const modalDatePrevision = document.querySelector(
       '[data-modal="prevision"]',
     );
@@ -105,10 +101,7 @@ export default function initEvents() {
             target.value,
           );
 
-          const progressBar = document.querySelector(
-            '[data-modal="progressBar"]',
-          );
-          const percentage = UI.getPregressPerc(
+          const percentage = getProgressPerc(
             target.value,
             totalPages.innerText,
           );
@@ -129,7 +122,7 @@ export default function initEvents() {
 
       books.forEach((book) => {
         book.currPag = dateModal;
-        book.percentage = UI.getPregressPerc(book.currPag, book.pagesTotal);
+        book.percentage = getProgressPerc(book.currPag, book.pagesTotal);
         book.prevision = dateContainer.innerText;
         if (+idTarget === book.id) {
           Store.updateBook(+idTarget, book);
@@ -153,5 +146,11 @@ export default function initEvents() {
   });
   inputPagesPerDayValue.addEventListener('change', (e) => {
     handleDatePrevisionMainForm(e);
+  });
+
+  document.addEventListener('DOMContentLoaded', UI.displayBooks);
+  btnAddBook.addEventListener('click', (e) => {
+    e.preventDefault();
+    UI.addBookData();
   });
 }

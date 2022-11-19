@@ -8,8 +8,6 @@ import {
   modalStructure,
 } from './helpers';
 
-// aqui fica só o que renderiza na tela
-
 export default class UI {
   static displayBooks() {
     const books = Store.getBooks();
@@ -165,7 +163,6 @@ export default class UI {
     }
   }
 
-  // // trocar para events
   static closeModal(element) {
     const modalContainer = document.querySelector('[data-modal="container"]');
     const body = document.querySelector('body');
@@ -189,11 +186,6 @@ export default class UI {
       body.style.overflowY = 'scroll';
       form.reset();
     }
-  }
-
-  // // trocar para utils
-  static getPregressPerc(currPag, totalPages) {
-    return ((currPag / totalPages) * 100).toFixed();
   }
 
   static updateProgressBar(id, percentage) {
